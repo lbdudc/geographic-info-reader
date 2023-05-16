@@ -1,0 +1,17 @@
+{
+  "name": "shapefile-reader",
+  "version": "1.0.0",
+  "description": "Shapefile reader for Node.js, reads a folder and returns a JSON with the data of the shapefiles",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "example": "node ./examples/BasicExample.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "shapefile": "^0.6.6",
+    "jschardet": "3.0.0"
+  },
+  "author": "victor.lamas@udc.es",
+  "license": "ISC"
+}
