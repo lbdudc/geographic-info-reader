@@ -3,8 +3,6 @@ import shapefile from 'shapefile';
 import { detectEncoding } from './utils/utils.js';
 import JSZip from 'jszip';
 
-
-
 class Processor {
 
     constructor(options) {
@@ -26,6 +24,8 @@ class Processor {
 
         let content = [];
 
+        const filesBefore = await fs.promises.readdir(folderPath);
+
         await this._unzipFiles(folderPath);
 
         const files = await fs.promises.readdir(folderPath);
@@ -39,7 +39,7 @@ class Processor {
             }
         }
 
-        await this._clearFolder(folderPath);
+        await this._clearFolder(folderPath, filesBefore);
 
         return content;
     }
@@ -134,14 +134,14 @@ class Processor {
         console.log('Extraction completed');
     }
 
-    async _clearFolder(folderPath) {
+    async _clearFolder(folderPath, filesBefore) {
         console.log(`Clearing folder ${folderPath}`);
 
         const files = await fs.promises.readdir(folderPath);
 
-        // Delete all files except .zip
+        // Delete all files except .zip and files that were in the folder before the process
         for (const file of files) {
-            if (!file.endsWith('.zip')) {
+            if (!file.endsWith('.zip') && !filesBefore.includes(file)) {
                 const filePath = folderPath + file;
 
                 fs.unlink(filePath, (err) => {
