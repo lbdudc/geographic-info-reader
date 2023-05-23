@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "shapefile": "^0.6.6",
-    "jschardet": "3.0.0"
+    "jschardet": "3.0.0",
+    "jszip": "^3.10.1"
   },
   "author": "victor.lamas@udc.es",
   "license": "ISC"
