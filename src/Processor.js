@@ -1,6 +1,6 @@
 import fs from 'fs';
 import shapefile from 'shapefile';
-import { detectEncoding } from './utils/utils.js';
+import { detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
 import JSZip from 'jszip';
 
 class Processor {
@@ -26,7 +26,7 @@ class Processor {
 
         const filesBefore = await fs.promises.readdir(folderPath);
 
-        await this._unzipFiles(folderPath);
+        await unzipFiles(folderPath);
 
         const files = await fs.promises.readdir(folderPath);
 
@@ -39,7 +39,7 @@ class Processor {
             }
         }
 
-        await this._clearFolder(folderPath, filesBefore);
+        await clearFolder(folderPath, filesBefore);
 
         return content;
     }
@@ -100,60 +100,6 @@ class Processor {
 
         return res;
     }
-
-    async _unzipFiles(folderPath) {
-        console.log(`Unzipping .zip files in folder ${folderPath}`);
-
-        const files = await fs.promises.readdir(folderPath);
-
-        for (const file of files) {
-            if (file.endsWith('.zip')) {
-                const zipFilePath = folderPath + file;
-                const zip = await JSZip.loadAsync(fs.readFileSync(zipFilePath));
-
-                for (const zipEntry of Object.values(zip.files)) {
-                    const entryFilePath = folderPath + zipEntry.name;
-                    const entryFolderPath = entryFilePath.substring(0, entryFilePath.lastIndexOf('/'));
-
-                    if (zipEntry.dir) {
-                        // Create the directory if it doesn't exist
-                        if (!fs.existsSync(entryFolderPath)) {
-                            fs.mkdirSync(entryFolderPath, { recursive: true });
-                        }
-                    } else {
-                        // Extract the file
-                        const entryData = await zipEntry.async('nodebuffer');
-                        fs.writeFileSync(entryFilePath, entryData);
-                    }
-                }
-
-                console.log(`Extracted ${zipFilePath}`);
-            }
-        }
-
-        console.log('Extraction completed');
-    }
-
-    async _clearFolder(folderPath, filesBefore) {
-        console.log(`Clearing folder ${folderPath}`);
-
-        const files = await fs.promises.readdir(folderPath);
-
-        // Delete all files except .zip and files that were in the folder before the process
-        for (const file of files) {
-            if (!file.endsWith('.zip') && !filesBefore.includes(file)) {
-                const filePath = folderPath + file;
-
-                fs.unlink(filePath, (err) => {
-                    if (err) {
-                        console.error(err)
-                        return
-                    }
-                })
-            }
-        }
-    }
-
 }
 
 
