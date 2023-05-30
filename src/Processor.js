@@ -1,7 +1,6 @@
 import fs from 'fs';
 import shapefile from 'shapefile';
-import { detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
-import JSZip from 'jszip';
+import { getGeographicType, detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
 
 class Processor {
 
@@ -86,10 +85,31 @@ class Processor {
             });
 
         // Generate the final result
+        // Iterate schemaFields and geographicInfo to generate the final result
+
+        const newSchema = [];
+        schemaFields.forEach((field) => {
+            const schemaField = field;
+            const geoInfoProps = JSON.parse(geographicInfo).value.properties;
+
+            const res = geoInfoProps[field.name]
+            const geoType = getGeographicType(res);
+
+            if (res != null && geoType != null) {
+                newSchema.push({
+                    name: schemaField.name,
+                    type: 'Geographic',
+                    geographicType: geoType,
+                });
+            } else {
+                newSchema.push(schemaField);
+            }
+        });
+
         let res = {
             name: fileName.split('.')[0],
             fileName: fileName,
-            schema: schemaFields,
+            schema: newSchema,
             geographicInfo: JSON.parse(geographicInfo),
             records: records,
         }
