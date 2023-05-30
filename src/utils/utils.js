@@ -2,6 +2,20 @@ import fs from 'fs';
 import jschardet from 'jschardet';
 import JSZip from 'jszip';
 
+
+/**
+ * Detects the type of geographic information
+ * @param {String} value
+ * @returns {String} type of geographic information or null if it is not a geographic information
+ */
+export function getGeographicType(value) {
+    const types = ['MULTIPOINT', 'MULTILINESTRING', 'MULTIPOLYGON', 'POINT', 'LINESTRING', 'POLYGON', 'GEOMETRYCOLLECTION', 'GEOMETRY'];
+    const str = JSON.stringify(value).toUpperCase();
+
+    return types.find((type) => str.includes(type)) || null;
+}
+
+
 /**
  * Detects the encoding of a file
  * @param {String} filePath
