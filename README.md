@@ -25,8 +25,8 @@ More examples in the `examples` folder
 ```javascript
 import Processor from "shapefile-reader";
 
-// Path to the folder with the shapefiles (cannot be a relative path)
-const folderPath = '/home/user/shapefiles/';
+// Path to the folder with the shapefiles (must be a relative path)
+const folderPath = './path/to/shapefile/';
 
 // Create a new instance of the processor
 const processor = new Processor({
