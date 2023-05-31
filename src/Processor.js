@@ -1,6 +1,7 @@
 import fs from 'fs';
 import shapefile from 'shapefile';
-import { getGeographicType, detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
+import { detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
+import path from 'path';
 
 class Processor {
 
@@ -19,26 +20,30 @@ class Processor {
      * @returns {Object} content with the information of the shapefiles
      */
     async getSHPFolderInfo(folderPath) {
-        console.log(`Processing folder ${folderPath}`);
+
+        const currentPath = process.cwd();
+        const absolutePath = path.join(currentPath, folderPath)
+
+        console.log(`Processing folder ${absolutePath}`);
 
         let content = [];
 
-        const filesBefore = await fs.promises.readdir(folderPath);
+        const filesBefore = await fs.promises.readdir(absolutePath);
 
-        await unzipFiles(folderPath);
+        await unzipFiles(absolutePath);
 
-        const files = await fs.promises.readdir(folderPath);
+        const files = await fs.promises.readdir(absolutePath);
 
         // If file is a .shp, process it
         for (const file of files) {
             if (file.endsWith('.shp')) {
-                const shapefilePath = folderPath + file;
+                const shapefilePath = absolutePath + file;
                 const fileContent = await this._processShapefile(shapefilePath);
                 content.push(fileContent);
             }
         }
 
-        await clearFolder(folderPath, filesBefore);
+        await clearFolder(absolutePath, filesBefore);
 
         return content;
     }
