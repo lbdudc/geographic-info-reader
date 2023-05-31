@@ -70,7 +70,7 @@ class Processor {
         const records = await dbfData.read();
 
         // Retrieve the schema from .dbf file
-        const schemaFields = dbfData._fields
+        let schemaFields = dbfData._fields
             .filter((field, index, self) =>
                 index === self.findIndex((t) => (
                     t.name === field.name && t.type === field.type
@@ -82,34 +82,18 @@ class Processor {
                     type: field.type === 'N' ? 'Number' : 'String',
                     length: field.length,
                 }
-            });
+            })
 
-        // Generate the final result
-        // Iterate schemaFields and geographicInfo to generate the final result
-
-        const newSchema = [];
-        schemaFields.forEach((field) => {
-            const schemaField = field;
-            const geoInfoProps = JSON.parse(geographicInfo).value.properties;
-
-            const res = geoInfoProps[field.name]
-            const geoType = getGeographicType(res);
-
-            if (res != null && geoType != null) {
-                newSchema.push({
-                    name: schemaField.name,
-                    type: 'Geographic',
-                    geographicType: geoType,
-                });
-            } else {
-                newSchema.push(schemaField);
-            }
-        });
+        // Add the geographic field to the schema
+        schemaFields.push({
+            name: 'geometry',
+            type: JSON.parse(geographicInfo).value?.geometry?.type || 'Geometry',
+        })
 
         let res = {
             name: fileName.split('.')[0],
             fileName: fileName,
-            schema: newSchema,
+            schema: schemaFields,
             geographicInfo: JSON.parse(geographicInfo),
             records: records,
         }
