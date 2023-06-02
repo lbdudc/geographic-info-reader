@@ -55,7 +55,8 @@ class Processor {
      * @returns {Object} content with the information of the shapefile
      */
     async _processShapefile(shapefilePath) {
-        const fileName = shapefilePath.split('/').pop();
+        // split the path to get the name of the file with "/"" or "\\"
+        const fileName = shapefilePath.split(/[/\\]/).pop();
 
         // Detect the encoding of the shapefile
         const encoding = this.options.encoding === 'auto' ? detectEncoding(shapefilePath) : this.options.encoding;
