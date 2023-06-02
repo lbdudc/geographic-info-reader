@@ -21,8 +21,15 @@ class Processor {
      */
     async getSHPFolderInfo(folderPath) {
 
-        const currentPath = process.cwd();
-        const absolutePath = path.join(currentPath, folderPath)
+        let absolutePath = null;
+
+        // Check first if the folderPath is an absolute path
+        if (path.isAbsolute(folderPath)) {
+            absolutePath = folderPath;
+        } else {
+            let currentPath = process.cwd();
+            absolutePath = path.join(currentPath, folderPath)
+        }
 
         console.log(`Processing folder ${absolutePath}`);
 
