@@ -1,6 +1,6 @@
 import fs from 'fs';
 import shapefile from 'shapefile';
-import { detectEncoding, unzipFiles, clearFolder } from './utils/utils.js';
+import { detectEncoding, unzipFiles, clearFolder, getAbsolutePath } from './utils/utils.js';
 import path from 'path';
 
 class Processor {
@@ -21,15 +21,8 @@ class Processor {
      */
     async getSHPFolderInfo(folderPath) {
 
-        let absolutePath = null;
+        let absolutePath = getAbsolutePath(folderPath);
 
-        // Check first if the folderPath is an absolute path
-        if (path.isAbsolute(folderPath)) {
-            absolutePath = folderPath;
-        } else {
-            let currentPath = process.cwd();
-            absolutePath = path.join(currentPath, folderPath)
-        }
 
         console.log(`Processing folder ${absolutePath}`);
 
@@ -44,7 +37,7 @@ class Processor {
         // If file is a .shp, process it
         for (const file of files) {
             if (file.endsWith('.shp')) {
-                const shapefilePath = absolutePath + file;
+                const shapefilePath = absolutePath + '/' + file;
                 const fileContent = await this._processShapefile(shapefilePath);
                 content.push(fileContent);
             }

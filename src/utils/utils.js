@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import jschardet from 'jschardet';
 import JSZip from 'jszip';
 
@@ -75,4 +76,11 @@ export async function clearFolder(folderPath, filesBefore = []) {
             })
         }
     }
+}
+
+export const getAbsolutePath = (folderPath) => {
+    if (path.isAbsolute(folderPath)) {
+        return folderPath;
+    }
+    return path.join(process.cwd(), folderPath);
 }
