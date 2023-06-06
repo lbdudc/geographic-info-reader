@@ -16,7 +16,7 @@ class Processor {
 
     async processFolder(inputPath, outputPath) {
         const inputPathAbsolute = getAbsolutePath(inputPath);
-        const outCalc = !outputPath ? "./output" : outputPath + '/output';
+        const outCalc = !outputPath ? inputPath + "/output" : outputPath + '/output';
         const outputPathAbsolute = getAbsolutePath(outCalc);
 
         // Unzip into the output folder
