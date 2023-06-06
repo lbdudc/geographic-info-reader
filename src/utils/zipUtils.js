@@ -132,7 +132,6 @@ const _unzipFilesRecursive = async (folderPath, outputFolder, prevReadZipFiles, 
                 console.log(file);
                 const filePath = folderPath + "/" + file;
                 const outputFilePath = outputFolder + "/" + file;
-                console.log(`Copying ${filePath} to ${outputFilePath}`);
                 fs.copyFileSync(filePath, outputFilePath);
             }
         }
