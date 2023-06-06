@@ -10,11 +10,12 @@ In your `package.json` add the following line:
 
 ```json
 dependencies: {
-    "shapefile-reader": "git+"
+    "shapefile-reader": "git+https://gitlab.lbd.org.es/GEMA/lps/gisbuilder2/shapefile-reader"
 }
 ```
 
 ```bash
+nvm use
 npm install
 ```
 
@@ -25,35 +26,20 @@ More examples in the `examples` folder
 ```javascript
 import Processor from "shapefile-reader";
 
-// Path to the folder with the shapefiles (must be a relative path)
-const folderPath = './path/to/shapefile/';
+// Path to the folder with the shapefiles
+const inputPath = './examples/shpfiles';
+const outputPath = './examples'; // by default is the same as inputPath /output
 
-// Create a new instance of the processor
 const processor = new Processor({
-    encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8'
+    encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
     geographicInfo: false, // true by default
     records: false, // true by default
 });
 
-// Get the info of the shapefiles in the folder
-processor.getSHPFolderInfo(folderPath).then(
-    (res) => {
-    // returns an array with the info of the shapefiles
-    // [ {
-    //     "name": "t_parques",
-    //     "fileName": "t_parques.shp",
-    //     "schema": [
-    //       {
-    //         "name": "agua",
-    //         "type": "String",
-    //         "length": 254
-    //       },
-    //       {
-    //         "name": "comedor",
-    //         "type": "String",
-    //         "length": 254
-    //       },
-    //     }
-    //              ...
-    // ]
+processor.processFolder(inputPath, outputPath).then(
+    (content) => {
+        // save to output.json
+        // fs.writeFileSync('./examples/output.json', JSON.stringify(content, null, 2));
+        // console.log(JSON.stringify(content, null, 2));
+    })
 )

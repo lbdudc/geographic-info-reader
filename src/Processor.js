@@ -1,7 +1,7 @@
 import fs from 'fs';
 import shapefile from 'shapefile';
-import { detectEncoding, unzipFiles, clearFolder, getAbsolutePath } from './utils/utils.js';
-import path from 'path';
+import { detectEncoding, getAbsolutePath } from './utils/utils.js';
+import { unzipFiles, zipFilesGroupByShapefile } from './utils/zipUtils.js';
 
 class Processor {
 
@@ -14,6 +14,26 @@ class Processor {
         };
     }
 
+    async processFolder(inputPath, outputPath) {
+        const inputPathAbsolute = getAbsolutePath(inputPath);
+        const outCalc = !outputPath ? "./output" : outputPath + '/output';
+        const outputPathAbsolute = getAbsolutePath(outCalc);
+
+        // Unzip into the output folder
+        console.log(` -- PHASE (1/3): Extract .zip files of folder ${inputPathAbsolute}`);
+        await unzipFiles(inputPathAbsolute, outputPathAbsolute);
+
+        // Process the output folder
+        console.log(` -- PHASE (2/3): Process folder shapefiles ${outputPathAbsolute}`);
+        const res = await this.getSHPFolderInfo(outputPathAbsolute);
+
+        // Reorder the output folder (group by shapefile) this clears the .shp, .dbf and .shx files
+        console.log(` -- PHASE (3/3): Reorder and clean the output folder ${outputPathAbsolute}`);
+        await zipFilesGroupByShapefile(outputPathAbsolute);
+
+        return res;
+    }
+
     /**
      * Process the folder and generate a json object with the information of the shapefiles
      * @param {String} folderPath 
@@ -23,15 +43,9 @@ class Processor {
 
         let absolutePath = getAbsolutePath(folderPath);
 
-
         console.log(`Processing folder ${absolutePath}`);
 
         let content = [];
-
-        const filesBefore = await fs.promises.readdir(absolutePath);
-
-        await unzipFiles(absolutePath);
-
         const files = await fs.promises.readdir(absolutePath);
 
         // If file is a .shp, process it
@@ -43,11 +57,8 @@ class Processor {
             }
         }
 
-        await clearFolder(absolutePath, filesBefore);
-
         return content;
     }
-
 
     /**
      * Process the shapefile and generate a json object with the information of the shapefile
