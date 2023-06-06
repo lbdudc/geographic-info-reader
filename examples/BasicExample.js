@@ -1,7 +1,8 @@
 import Processor from "../index.js";
 
-// Path to the folder with the shapefiles (cannot be a relative path)
-const folderPath = './examples/shpfiles/';
+// Path to the folder with the shapefiles
+const inputPath = './examples/shpfiles';
+const outputPath = './examples';
 
 const processor = new Processor({
     encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
@@ -9,8 +10,9 @@ const processor = new Processor({
     records: false, // true by default
 });
 
-processor.getSHPFolderInfo(folderPath).then(
+processor.processFolder(inputPath, outputPath).then(
     (content) => {
-        console.log(JSON.stringify(content, null, 2));
-    }
-)
+        // save to output.json
+        // fs.writeFileSync('./examples/output.json', JSON.stringify(content, null, 2));
+        // console.log(JSON.stringify(content, null, 2));
+    })
