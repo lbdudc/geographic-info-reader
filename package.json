@@ -1,6 +1,6 @@
 {
   "name": "shapefile-reader",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Shapefile reader for Node.js, reads a folder and returns a JSON with the data of the shapefiles",
   "main": "index.js",
   "type": "module",

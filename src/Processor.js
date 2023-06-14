@@ -101,10 +101,16 @@ class Processor {
                 }
             })
 
+        const TYPES = {
+            "Polygon": "MultiPolygon",
+            "LineString": "MultiLineString",
+            "Point": "MultiPoint"
+        }
+
         // Add the geographic field to the schema
         schemaFields.push({
             name: 'geometry',
-            type: JSON.parse(geographicInfo).value?.geometry?.type || 'Geometry',
+            type: TYPES[JSON.parse(geographicInfo).value?.geometry?.type] || 'Geometry',
         })
 
         let res = {
