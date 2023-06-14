@@ -29,7 +29,7 @@ export async function clearFolder(folderPath, filesBefore = []) {
         if (!filesBefore.includes(file)) {
             const filePath = folderPath + "/" + file;
 
-            fs.unlink(filePath, (err) => {
+            fs.unlinkSync(filePath, (err) => {
                 if (err) {
                     console.error(err)
                     return
