@@ -104,7 +104,10 @@ class Processor {
         const TYPES = {
             "Polygon": "MultiPolygon",
             "LineString": "MultiLineString",
-            "Point": "MultiPoint"
+            "Point": "MultiPoint",
+            "MultiPolygon": "MultiPolygon",
+            "MultiLineString": "MultiLineString",
+            "MultiPoint": "MultiPoint",
         }
 
         // Add the geographic field to the schema
