@@ -21,22 +21,22 @@ export function detectEncoding(filePath) {
  */
 export async function clearFolder(folderPath, filesBefore = []) {
     console.log(`Clearing folder ${folderPath}`);
+    console.log(`Files before: ${filesBefore}`);
 
-    const files = await fs.promises.readdir(folderPath);
+    const files = fs.readdirSync(folderPath);
 
     // Delete all files except the ones that were in the folder before the process
     for (const file of files) {
         if (!filesBefore.includes(file)) {
-            const filePath = folderPath + "/" + file;
-
-            fs.unlinkSync(filePath, (err) => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-            })
+            const filePath = folderPath + '\\' + file;
+            fs.unlinkSync(filePath);
+            console.log(`File ${filePath} deleted`);
+        } else {
+            console.log(`File ${file} was in the folder before the process`);
         }
     }
+
+    console.log(`Folder ${folderPath} cleared`);
 }
 
 export const getAbsolutePath = (folderPath) => {

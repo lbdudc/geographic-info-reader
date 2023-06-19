@@ -9,6 +9,9 @@ node_modules
 *.sln
 *.sw?
 *.iml
+test/testData/processor/input
+test/testData/processor/output
+coverage
 
 .env
 *.pem
