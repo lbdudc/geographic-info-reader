@@ -12,6 +12,7 @@ node_modules
 test/testData/processor/input
 test/testData/processor/output
 coverage
+examples/output
 
 .env
 *.pem
