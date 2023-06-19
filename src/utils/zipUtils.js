@@ -40,7 +40,7 @@ export async function zipFilesGroupByShapefile(folderPath) {
     console.log(`Zip files of folder ${folderPath}`);
 
     // Read the files of the folder
-    let files = await fs.promises.readdir(folderPath);
+    let files = fs.readdirSync(folderPath);
 
     // Group the files by shapefile, omitting the .sld files
     const filesByShapefile = {};
@@ -72,11 +72,12 @@ export async function zipFilesGroupByShapefile(folderPath) {
     }
 
     // Get the list of .zip files and .sld files
-    files = await fs.promises.readdir(folderPath);
+    files = fs.readdirSync(folderPath);
     const zipFiles = files.filter(file => file.endsWith('.zip'));
     const sldFiles = files.filter(file => file.endsWith('.sld'));
 
     // Clear the folder of all files except .zip files and .sld files
+    console.log("Clearing folder", folderPath);
     await clearFolder(folderPath, zipFiles.concat(sldFiles));
 }
 

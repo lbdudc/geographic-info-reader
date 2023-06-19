@@ -1,0 +1,1327 @@
+[
+  {
+    "name": "01_water_collection",
+    "fileName": "01_water_collection.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_CAPT",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "DENOMINACI",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "TIPO_CAPT",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SISTEMA_CA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "CUENCA",
+        "type": "String",
+        "length": 14
+      },
+      {
+        "name": "SUBCUENCA",
+        "type": "String",
+        "length": 20
+      },
+      {
+        "name": "USO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROTECCION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CONTADOR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "INFRAESTRU",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MCUBICO_AU",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "geometry",
+        "type": "MultiPoint"
+      }
+    ]
+  },
+  {
+    "name": "02_main_fibrecement",
+    "fileName": "02_main_fibrecement.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_COND",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_TRA",
+        "type": "String",
+        "length": 5
+      },
+      {
+        "name": "TIPO_TCOND",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TIPO_TRAMO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "LONGIT_010",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "DIAMETRO",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "BAJO_ACERA",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "BAJO_CALZA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "geometry",
+        "type": "MultiLineString"
+      }
+    ]
+  },
+  {
+    "name": "03_distribution_fibrecement",
+    "fileName": "03_distribution_fibrecement.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "CODIGO_RED",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_TRA",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "TIPO_RDIS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "LONGIT_011",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "DIAMETRO",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "LONGIT_EXT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "LONGIT_INT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "BAJO_ACERA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BAJO_CALZA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SIST_TRANS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "geometry",
+        "type": "MultiLineString"
+      }
+    ]
+  },
+  {
+    "name": "04_main",
+    "fileName": "04_main.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_COND",
+        "type": "String",
+        "length": 6
+      },
+      {
+        "name": "COD_TRA",
+        "type": "String",
+        "length": 8
+      },
+      {
+        "name": "TIPO_TCOND",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TIPO_TRAMO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "LONGIT_010",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "DIAMETRO",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "BAJO_ACERA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BAJO_CALZA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "geometry",
+        "type": "MultiLineString"
+      }
+    ]
+  },
+  {
+    "name": "05_distribution",
+    "fileName": "05_distribution.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "CODIGO_RED",
+        "type": "String",
+        "length": 6
+      },
+      {
+        "name": "COD_TRA",
+        "type": "String",
+        "length": 12
+      },
+      {
+        "name": "TIPO_RDIS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "LONGIT_011",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "DIAMETRO",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "LONGIT_EXT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "LONGIT_INT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "BAJO_ACERA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BAJO_CALZA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SIST_TRANS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "geometry",
+        "type": "MultiLineString"
+      }
+    ]
+  },
+  {
+    "name": "06_populated_place",
+    "fileName": "06_populated_place.shp",
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "ENTIDAD",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "NUCLEO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TIPO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CENSO_DERE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "PADRON",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "POB_ESTACI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ALTITUD",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "VIV_TOTAL",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "VIV_P_OCUP",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "VIV_S_OCUP",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "VIV_DESOCU",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "VIV_OTRAS",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "OTROS_ALOJ",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ESTA_COLEC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "PLAZAS_EC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "HOTELES",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "APARTAMENT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "CASAS_RURA",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_CAUDAL",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_RESTRI",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_CONTAD",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_TASA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_TASA_V",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_INSTAL",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "AAG_HIDRAN",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_EST_HI",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "AAG_VALVUL",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_EST_VA",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "AAG_BOCASR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_EST_BO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "AAG_V_CONE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_V_NCON",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_C_INVI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_C_VERA",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_V_EXPR",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_V_DEPR",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_PERDID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_CALIDA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_L_DEFI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_V_DEFI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_PR_DEF",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_PE_DEF",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_POB_RE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_POB_ES",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_FECONT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_FENCON",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_VIVIEN",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_CAUDAL",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAU_DEF_RE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_DEF_ES",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAU_DEF_VI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_POZOS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SYD_SUMIDE",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SYD_CALIDA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SYD_V_CONE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_V_NCON",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_L_DEFI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_V_DEFI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_PR_DEF",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_PE_DEF",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_C_DESA",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_C_TRAT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_REUTIL",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_REU_01",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_REU_02",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "AAG_VENTOS",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_EST_VE",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "AAG_EST_FU",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "AAG_PBOMB",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "AAG_EST_PB",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TASA_SANEA",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "CAPTACION_",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "DEPOSITO_E",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "POTABILIZA",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "DEPURADORA",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "CAR_CODIGO",
+        "type": "String",
+        "length": 7
+      },
+      {
+        "name": "CAR_PTO_KM",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "CAR_ORD_MU",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "CAR_ORD_TR",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "CAR_DIST_I",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "CAR_L_CONS",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "CAR_L_ACON",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "CAR_L_TOTA",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "CAR_INCOM",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CAR_OBSERV",
+        "type": "String",
+        "length": 24
+      },
+      {
+        "name": "RBA_V_SSER",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "RBA_PR_SSE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "RBA_PE_SSE",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "RBA_SERLIM",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "RBA_PLALIM",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "TVE1",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TVE2",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TV_AUTONOM",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TV_PRIVADA",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "RADIO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "ELECTRICID",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "GAS",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "ALU_V_SIN",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ALU_L_SIN",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ACCESIB",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CISTERNA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SYD_ALI_CO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SYD_ALI_SI",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TV_ANT",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TV_CA",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TM_GSM",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TM_UMTS",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "CORREO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_RD",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_XD",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_WI",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_CA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_RB",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "BA_ST",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CAPI",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "TDT",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "TASA_ABAST",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "MATERIAL_A",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GRANDES_CO",
+        "type": "String",
+        "length": 68
+      },
+      {
+        "name": "PROBLEMAS_",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_01",
+        "type": "String",
+        "length": 91
+      },
+      {
+        "name": "PROBLEM_02",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_03",
+        "type": "String",
+        "length": 50
+      },
+      {
+        "name": "PROBLEM_04",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_05",
+        "type": "String",
+        "length": 35
+      },
+      {
+        "name": "PROBLEM_06",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_07",
+        "type": "String",
+        "length": 19
+      },
+      {
+        "name": "PROBLEM_08",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_09",
+        "type": "String",
+        "length": 48
+      },
+      {
+        "name": "PROBLEM_10",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_11",
+        "type": "String",
+        "length": 50
+      },
+      {
+        "name": "PROBLEM_12",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_13",
+        "type": "String",
+        "length": 51
+      },
+      {
+        "name": "PROBLEM_14",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_15",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "PROBLEM_16",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_17",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "PROBLEM_18",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_19",
+        "type": "String",
+        "length": 13
+      },
+      {
+        "name": "PROBLEM_20",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_21",
+        "type": "String",
+        "length": 39
+      },
+      {
+        "name": "PROBLEM_22",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_23",
+        "type": "String",
+        "length": 52
+      },
+      {
+        "name": "PROBLEM_24",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROBLEM_25",
+        "type": "String",
+        "length": 5
+      },
+      {
+        "name": "VIV_CONECT",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SYD_INSTAL",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "NIVEL_ACCE",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "RED_VECINA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PADRON2000",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "SUPERFICIE",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "NUMERO_ACC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "NUMERO__01",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "GEOMETRIA_",
+        "type": "String",
+        "length": 68
+      },
+      {
+        "name": "LONGITUD_R",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "LONGITU_01",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "TM_GPRS",
+        "type": "String",
+        "length": 20
+      },
+      {
+        "name": "geometry",
+        "type": "MultiPolygon"
+      }
+    ]
+  },
+  {
+    "name": "07_municipality",
+    "fileName": "07_municipality.shp",
+    "schema": [
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "geometry",
+        "type": "MultiPolygon"
+      }
+    ]
+  }
+]
