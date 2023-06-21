@@ -1,6 +1,6 @@
 import { test, describe, expect } from "vitest";
 import Processor from "../src/Processor";
-import { rmdirSync, readFileSync, cpSync, existsSync, readdirSync, fstat, writeFileSync } from 'fs';
+import { rmdirSync, readFileSync, cpSync, existsSync, readdirSync, writeFileSync } from 'fs';
 
 describe("Processor", () => {
 
@@ -26,7 +26,7 @@ describe("Processor", () => {
         const res = await processor.processFolder(`${testFolderPath}/input`, `${testFolderPath}/`)
 
         // Assert that the output folder contains the expected files
-        const expectedJSONRes = readFileSync(`${testFolderPath}/expectedOutput/expectedOutput.json`, 'utf8');
+        const expectedJSONRes = JSON.parse(readFileSync(`${testFolderPath}/expectedOutput/expectedOutput.json`, 'utf8'));
         const expectedFiles = JSON.parse(readFileSync(`${testFolderPath}/expectedOutput/expectedFiles.json`, 'utf8'));
 
         expect(existsSync(`${testFolderPath}/output`)).toBe(true);
@@ -42,7 +42,7 @@ describe("Processor", () => {
 
         writeFileSync(`${testFolderPath}/output/output.json`, JSON.stringify(res, null, 2), 'utf8');
 
-        expect(JSON.stringify(res, null, 2)).toBe(expectedJSONRes);
+        expect(res).toStrictEqual(expectedJSONRes);
     });
 
 });

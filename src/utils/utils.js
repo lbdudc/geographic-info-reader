@@ -28,7 +28,7 @@ export async function clearFolder(folderPath, filesBefore = []) {
     // Delete all files except the ones that were in the folder before the process
     for (const file of files) {
         if (!filesBefore.includes(file)) {
-            const filePath = folderPath + '\\' + file;
+            const filePath = folderPath + path.sep + file;
             fs.unlinkSync(filePath);
             console.log(`File ${filePath} deleted`);
         } else {
