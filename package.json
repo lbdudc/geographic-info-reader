@@ -1,5 +1,5 @@
 {
-  "name": "shapefile-reader",
+  "name": "@lbdudc/gp-shapefile-reader",
   "version": "1.0.8",
   "description": "Shapefile reader for Node.js, reads a folder and returns a JSON with the data of the shapefiles",
   "main": "index.js",
