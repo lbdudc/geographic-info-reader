@@ -2,6 +2,7 @@ import fs from "fs";
 import shapefile from "shapefile";
 import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
 import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
+import path from "path";
 
 class Processor {
   constructor(options) {
@@ -16,8 +17,8 @@ class Processor {
   async processFolder(inputPath, outputPath) {
     const inputPathAbsolute = getAbsolutePath(inputPath);
     const outCalc = !outputPath
-      ? inputPath + "/output"
-      : outputPath + "/output";
+      ? `${inputPath}${path.sep}output`
+      : `${outputPath}${path.sep}output`;
     const outputPathAbsolute = getAbsolutePath(outCalc);
 
     // Unzip into the output folder
@@ -57,7 +58,7 @@ class Processor {
     // If file is a .shp, process it
     for (const file of files) {
       if (file.endsWith(".shp")) {
-        const shapefilePath = absolutePath + "/" + file;
+        const shapefilePath = absolutePath + path.sep + file;
         const fileContent = await this._processShapefile(shapefilePath);
         content.push(fileContent);
       }

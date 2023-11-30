@@ -1,8 +1,9 @@
 import Processor from "../index.js";
+import path from "path";
 
 // Path to the folder with the shapefiles
-const inputPath = "./examples/shpfiles";
-const outputPath = "./examples";
+const inputPath = `.${path.sep}examples${path.sep}shpfiles`;
+const outputPath = `.${path.sep}examples`;
 
 const processor = new Processor({
   encoding: "utf-8", // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'

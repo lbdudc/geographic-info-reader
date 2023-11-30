@@ -1,6 +1,7 @@
 import fs from "fs";
 import JSZip from "jszip";
 import { clearFolder } from "./utils.js";
+import path from "path";
 
 /**
  * Unzips all .zip files in a folder
@@ -60,12 +61,12 @@ export async function zipFilesGroupByShapefile(folderPath) {
     const zip = new JSZip();
 
     for (const file of files) {
-      const filePath = folderPath + "/" + file;
+      const filePath = folderPath + path.sep + file;
       const fileData = fs.readFileSync(filePath);
       zip.file(file, fileData);
     }
 
-    const zipFilePath = folderPath + "/" + shapefileName + ".zip";
+    const zipFilePath = folderPath + path.sep + shapefileName + ".zip";
     const content = await zip.generateAsync({ type: "nodebuffer" });
     fs.writeFileSync(zipFilePath, content);
   }
@@ -97,14 +98,14 @@ const _unzipFilesRecursive = async (
 
   for (const file of files) {
     if (file.endsWith(".zip") && !prevReadZipFiles.includes(file)) {
-      const zipFilePath = folderPath + "/" + file;
+      const zipFilePath = folderPath + path.sep + file;
       const zip = await JSZip.loadAsync(fs.readFileSync(zipFilePath));
 
       for (const zipEntry of Object.values(zip.files)) {
-        const entryFilePath = folderPath + "/" + zipEntry.name;
+        const entryFilePath = folderPath + path.sep + zipEntry.name;
         const entryFolderPath = entryFilePath.substring(
           0,
-          entryFilePath.lastIndexOf("/"),
+          entryFilePath.lastIndexOf(path.sep),
         );
 
         if (zipEntry.dir) {
@@ -130,7 +131,7 @@ const _unzipFilesRecursive = async (
     .filter((file) => file.endsWith(".zip"))
     .filter((file) => {
       return !prevReadZipFiles
-        .map((file) => file.substring(file.lastIndexOf("/") + 1))
+        .map((file) => file.substring(file.lastIndexOf(path.sep) + 1))
         .includes(file);
     });
 
@@ -148,11 +149,11 @@ const _unzipFilesRecursive = async (
     for (const file of filesAfter) {
       if (
         !file.endsWith(".zip") &&
-        !fs.lstatSync(folderPath + "/" + file).isDirectory()
+        !fs.lstatSync(folderPath + path.sep + file).isDirectory()
       ) {
         console.log(file);
-        const filePath = folderPath + "/" + file;
-        const outputFilePath = outputFolder + "/" + file;
+        const filePath = folderPath + path.sep + file;
+        const outputFilePath = outputFolder + path.sep + file;
         fs.copyFileSync(filePath, outputFilePath);
       }
     }
