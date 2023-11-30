@@ -1,6 +1,6 @@
 # Shapefile Reader
 
-![GitHub license](https://img.shields.io/badge/license-ISC-blue.svg)
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen.svg)
 [![npm version](https://badge.fury.io/js/shapefile-reader.svg)](https://badge.fury.io/js/shapefile-reader)
 
