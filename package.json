@@ -15,7 +15,7 @@
     "shapefile": "^0.6.6"
   },
   "author": "victor.lamas@udc.es",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@vitest/coverage-istanbul": "^0.32.2",
     "vitest": "^0.32.0"
