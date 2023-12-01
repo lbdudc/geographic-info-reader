@@ -11,14 +11,16 @@ class Processor {
       schema: true,
       geographicInfo: true,
       records: true,
+      outputPath: null
     };
   }
 
-  async processFolder(inputPath, outputPath) {
+  async processFolder(inputPath) {
     const inputPathAbsolute = getAbsolutePath(inputPath);
-    const outCalc = !outputPath
+
+    const outCalc = !this.options.outputPath
       ? `${inputPath}${path.sep}output`
-      : `${outputPath}${path.sep}output`;
+      : `${this.options.outputPath}${path.sep}output`;
     const outputPathAbsolute = getAbsolutePath(outCalc);
 
     // Unzip into the output folder
