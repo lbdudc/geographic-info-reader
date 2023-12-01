@@ -3,6 +3,7 @@ import shapefile from "shapefile";
 import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
 import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
+import log from "./utils/log.js";
 
 class Processor {
   constructor(options) {
@@ -11,7 +12,7 @@ class Processor {
       schema: true,
       geographicInfo: true,
       records: true,
-      outputPath: null
+      outputPath: null,
     };
   }
 
@@ -24,19 +25,15 @@ class Processor {
     const outputPathAbsolute = getAbsolutePath(outCalc);
 
     // Unzip into the output folder
-    console.log(
-      ` -- PHASE (1/3): Extract .zip files of folder ${inputPathAbsolute}`,
-    );
+    log(` -- PHASE (1/3): Extract .zip files of folder ${inputPathAbsolute}`);
     await unzipFiles(inputPathAbsolute, outputPathAbsolute);
 
     // Process the output folder
-    console.log(
-      ` -- PHASE (2/3): Process folder shapefiles ${outputPathAbsolute}`,
-    );
+    log(` -- PHASE (2/3): Process folder shapefiles ${outputPathAbsolute}`);
     const res = await this.getSHPFolderInfo(outputPathAbsolute);
 
     // Reorder the output folder (group by shapefile) this clears the .shp, .dbf and .shx files
-    console.log(
+    log(
       ` -- PHASE (3/3): Reorder and clean the output folder ${outputPathAbsolute}`,
     );
     await zipFilesGroupByShapefile(outputPathAbsolute);
@@ -52,7 +49,7 @@ class Processor {
   async getSHPFolderInfo(folderPath) {
     let absolutePath = getAbsolutePath(folderPath);
 
-    console.log(`Processing folder ${absolutePath}`);
+    log(`Processing folder ${absolutePath}`);
 
     let content = [];
     const files = await fs.promises.readdir(absolutePath);
@@ -84,7 +81,7 @@ class Processor {
         ? detectEncoding(shapefilePath)
         : this.options.encoding;
 
-    console.log(`Processing ${fileName} with encoding ${encoding}`);
+    log(`Processing ${fileName} with encoding ${encoding}`);
 
     // Retrieve the geographic information from .shp file
     const source = await shapefile.open(shapefilePath, undefined, {

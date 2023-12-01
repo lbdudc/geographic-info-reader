@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import jschardet from "jschardet";
+import log from "./log.js";
 
 /**
  * Detects the encoding of a file
@@ -19,8 +20,8 @@ export function detectEncoding(filePath) {
  * @param {Array} filesBefore
  */
 export async function clearFolder(folderPath, filesBefore = []) {
-  console.log(`Clearing folder ${folderPath}`);
-  console.log(`Files before: ${filesBefore}`);
+  log(`Clearing folder ${folderPath}`);
+  log(`Files before: ${filesBefore}`);
 
   const files = fs.readdirSync(folderPath);
 
@@ -29,13 +30,13 @@ export async function clearFolder(folderPath, filesBefore = []) {
     if (!filesBefore.includes(file)) {
       const filePath = folderPath + path.sep + file;
       fs.unlinkSync(filePath);
-      console.log(`File ${filePath} deleted`);
+      log(`File ${filePath} deleted`);
     } else {
-      console.log(`File ${file} was in the folder before the process`);
+      log(`File ${file} was in the folder before the process`);
     }
   }
 
-  console.log(`Folder ${folderPath} cleared`);
+  log(`Folder ${folderPath} cleared`);
 }
 
 export const getAbsolutePath = (folderPath) => {
