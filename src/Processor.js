@@ -76,7 +76,7 @@ class Processor {
    */
   async _processShapefile(shapefilePath) {
     // split the path to get the name of the file with "/"" or "\\"
-    const fileName = shapefilePath.split(/[/\\]/).pop();
+    const fileName = shapefilePath.split(path.sep).pop();
 
     // Detect the encoding of the shapefile
     const encoding =
