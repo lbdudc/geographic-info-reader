@@ -11,7 +11,6 @@ class Processor {
       encoding: "auto",
       schema: true,
       geographicInfo: true,
-      records: true,
       outputPath: null,
     };
   }
@@ -93,7 +92,6 @@ class Processor {
     // Retrieve the data from .dbf file
     const dbfFilePath = shapefilePath.replace(".shp", ".dbf");
     const dbfData = await shapefile.openDbf(dbfFilePath);
-    const records = await dbfData.read();
 
     // Retrieve the schema from .dbf file
     let schemaFields = dbfData._fields
@@ -130,12 +128,10 @@ class Processor {
       name: fileName.split(".")[0],
       fileName: fileName,
       schema: schemaFields,
-      geographicInfo: JSON.parse(geographicInfo),
-      records: records,
+      geographicInfo: JSON.parse(geographicInfo)
     };
 
-    // delete res keys if options.records or options.geographicInfo are false
-    if (!this.options.records) delete res.records;
+    // delete res keys if options.geographicInfo is false
     if (!this.options.geographicInfo) delete res.geographicInfo;
 
     return res;

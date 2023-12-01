@@ -20,7 +20,6 @@ describe("Processor", () => {
         const processor = new Processor({
             encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
             geographicInfo: false, // true by default
-            records: false, // true by default
             outputPath: `${testFolderPath}/`,
         });
 
