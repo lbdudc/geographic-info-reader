@@ -12,7 +12,8 @@ describe("Processor", () => {
         try {
             rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
         } catch (error) {
-            console.log(error);
+            // Expect that the error is because the folder doesn't exist
+            expect(error.code).toBe('ENOENT');
         }
 
         cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, { recursive: true, force: true });
