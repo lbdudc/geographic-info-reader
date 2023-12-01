@@ -2,7 +2,7 @@
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen.svg)
-[![npm version](https://badge.fury.io/js/shapefile-reader.svg)](https://badge.fury.io/js/shapefile-reader)
+![npm version](https://badge.fury.io/js/shapefile-reader.svg)
 
 ## Description
 
@@ -34,8 +34,8 @@ const outputPath = './examples'; // by default is the same as inputPath /output
 
 const processor = new Processor({
     encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
-    geographicInfo: false, // true by default
-    records: false, // true by default
+    geographicInfo: false, // true by default, if true, the geographic information is included in the output
+    records: false, // true by default, if true, the records are included in the output
 });
 
 processor.processFolder(inputPath, outputPath).then(
