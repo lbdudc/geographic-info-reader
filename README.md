@@ -41,7 +41,6 @@ const outputPath = './examples'; // By default, the output path is the same as t
 const processor = new Processor({
     encoding: 'utf-8', // Set the file encoding: 'auto' (default), 'ascii', 'utf8', 'utf-8', 'latin1', 'binary', 'base64', 'hex'
     geographicInfo: false, // Include geographic information in the output (default: true)
-    records: false, // Include records in the output (default: true)
     outputPath: outputPath // Optional: designate a specific folder for processed shapefiles
 });
 
@@ -121,16 +120,8 @@ The object returned by the processFolder method is an array of objects, one for 
                     ]
                 }
             }
-        },
-        "records": {
-            "done": false,
-            "value": {
-                "GEOID": 516864,
-                "FASE": "2000",
-            }
         }
-    },
-
+    }
 ]
 ```
 
