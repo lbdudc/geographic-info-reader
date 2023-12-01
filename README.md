@@ -8,11 +8,6 @@
 
 The library offers comprehensive functionalities to process shapefiles, parsing them into a structured JSON format. By invoking the provided methods, users can easily navigate through the geographical and attribute data associated with each shapefile contained within a designated folder.
 
-```bash
-nvm use
-npm install
-```
-
 ## Installation
 
 Install the package via npm:
@@ -23,44 +18,75 @@ npm install @lbdudc/gp-shapefile-reader
 
 ## Usage
 
-The library enables users to read and process shapefiles effortlessly. By initializing a Processor instance with configurable options and providing the path to the folder containing shapefiles, users can obtain a comprehensive JSON representation of the geographical and attribute data associated with each shapefile.
+This library simplifies the reading and processing of shapefiles. To utilize its functionalities:
+
+1. **Input:** Refer to the "Input" section to understand the supported file formats and their requirements.
+
+2. **Initialization:** Create an instance of the Processor class, configuring it with the desired options.
+
+3. **Path Specification:** Provide the path to the folder containing the shapefiles to the Processor instance.
+
+4. **Output:** Check the "Output" section for details on the generated output structure and file formats.
+
+Once initialized and provided with the necessary inputs, the Processor will generate a comprehensive JSON representation. This representation includes both geographical and attribute data associated with each shapefile.
 
  ```js
 import Processor from "shapefile-reader";
 
-// Path to the folder with the shapefiles
+// Define the path to the folder containing the shapefiles
 const inputPath = './examples/shpfiles';
-const outputPath = './examples'; // by default is the same as inputPath /output
+const outputPath = './examples'; // By default, the output path is the same as the inputPath appended with '/output'
 
+// Create a new Processor instance with customizable options
 const processor = new Processor({
-    encoding: 'utf-8', // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
-    geographicInfo: false, // true by default, if true, the geographic information is included in the output
-    records: false, // true by default, if true, the records are included in the output
+    encoding: 'utf-8', // Set the file encoding: 'auto' (default), 'ascii', 'utf8', 'utf-8', 'latin1', 'binary', 'base64', 'hex'
+    geographicInfo: false, // Include geographic information in the output (default: true)
+    records: false, // Include records in the output (default: true)
+    outputPath: outputPath // Optional: designate a specific folder for processed shapefiles
 });
 
-processor.processFolder(inputPath, outputPath).then(
+// Process the folder containing the shapefiles
+processor.processFolder(inputPath).then(
     (content) => {
-    // returns an array of objects, for each shapefile
-    // See Output JSON section for more details
+        // Returns an array of objects, each representing a shapefile
+        // Refer to the Output JSON section for more information
         console.log(content);
-    })
-)
+    }
+);
+
 ```
 
-## Output
+## Overview
 
-Upon completion of the processing, the output folder will contain various files corresponding to each shapefile, including .cpg, .dbf, .prj, .shp, .shx, and .sld files.
+### Input
 
-For example, with a 01_shapefile.shp, the output folder will contain the following files:
+This library supports processing geographic data stored in Shapefile format. It accepts:
 
-- 01_shapefile.cpg
-- 01_shapefile.dbf
-- 01_shapefile.prj
-- 01_shapefile.shp
-- 01_shapefile.shx
-- 01_shapefile.sld
+- Individual files with extensions: `.shp`, `.cpg`, `.dbf`, `.prj`, `.qpj`, `.shx`.
+- Compressed data with Shapefile information in a `.zip` file.
 
-## Output JSON
+The library efficiently handles these inputs for easy manipulation and analysis of geographic data.
+
+**Note:** Ensure associated files share the same base name for the shapefile. Failure to do so may result in processing errors or incomplete data.
+
+### Output
+
+The output folder will contain the Shapefiles zipped by their respective names.
+
+#### Example
+
+Suppose you have a set of Shapefile files named:
+
+- `example.shp`
+- `example.cpg`
+- `example.dbf`
+- `example.prj`
+- `example.qpj`
+- `example.shx`
+
+When processed using this library, the output folder will include a zip file named `example.zip`, containing all these associated files.
+
+### Output JSON
 
 The object returned by the processFolder method is an array of objects, one for each shapefile. Each object contains the following properties:
 
@@ -114,7 +140,6 @@ Explore additional examples in the examples folder:
 
 ```bash
 npm run example
-
 ```
 
 ## Dependencies
