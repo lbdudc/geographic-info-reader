@@ -1,7 +1,11 @@
 {
   "name": "@lbdudc/gp-shapefile-reader",
-  "version": "1.1.0",
-  "homepage": "https://gitlab.lbd.org.es/publico/gis-publisher/shapefile-reader",
+  "version": "1.1.1",
+  "homepage": "https://github.com/lbdudc/shapefile-reader#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbdudc/shapefile-reader.git"
+  },
   "description": "Shapefile reader for Node.js, reads a folder and returns a JSON with the data of the shapefiles",
   "main": "index.js",
   "type": "module",

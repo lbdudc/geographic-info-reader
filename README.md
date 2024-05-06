@@ -30,29 +30,26 @@ This library simplifies the reading and processing of shapefiles. To utilize its
 
 Once initialized and provided with the necessary inputs, the Processor will generate a comprehensive JSON representation. This representation includes both geographical and attribute data associated with each shapefile.
 
- ```js
-import Processor from "shapefile-reader";
+```js
+import Processor from "@lbdudc/gp-shapefile-reader";
 
 // Define the path to the folder containing the shapefiles
-const inputPath = './examples/shpfiles';
-const outputPath = './examples'; // By default, the output path is the same as the inputPath appended with '/output'
+const inputPath = "./examples/shpfiles";
+const outputPath = "./examples"; // By default, the output path is the same as the inputPath appended with '/output'
 
 // Create a new Processor instance with customizable options
 const processor = new Processor({
-    encoding: 'utf-8', // Set the file encoding: 'auto' (default), 'ascii', 'utf8', 'utf-8', 'latin1', 'binary', 'base64', 'hex'
-    geographicInfo: false, // Include geographic information in the output (default: true)
-    outputPath: outputPath // Optional: designate a specific folder for processed shapefiles
+  encoding: "utf-8", // Set the file encoding: 'auto' (default), 'ascii', 'utf8', 'utf-8', 'latin1', 'binary', 'base64', 'hex'
+  geographicInfo: false, // Include geographic information in the output (default: true)
+  outputPath: outputPath, // Optional: designate a specific folder for processed shapefiles
 });
 
 // Process the folder containing the shapefiles
-processor.processFolder(inputPath).then(
-    (content) => {
-        // Returns an array of objects, each representing a shapefile
-        // Refer to the Output JSON section for more information
-        console.log(content);
-    }
-);
-
+processor.processFolder(inputPath).then((content) => {
+  // Returns an array of objects, each representing a shapefile
+  // Refer to the Output JSON section for more information
+  console.log(content);
+});
 ```
 
 ## Overview
@@ -91,37 +88,31 @@ The object returned by the processFolder method is an array of objects, one for 
 
 ```json
 [
-    {
-
-        "name": "01_shapefile",
-        "fileName": "01_shapefile.shp",
-        "schema": [
-            {
-                "name": "name",
-                "type": "Number || String || Boolean || Geometry ...",
-                "length": "Number"
-            },
-        ],
-        "geographicInfo": {
-            "done": false,
-            "value": {
-                "type": "Feature",
-                "properties": {
-                    "GEOID": 516864,
-                    "FASE": "2000",
-                },
-                "geometry": {
-                    "type": "MultiPoint",
-                    "coordinates": [
-                        [
-                            568244.3307745245,
-                            4782578.271440068
-                        ]
-                    ]
-                }
-            }
+  {
+    "name": "01_shapefile",
+    "fileName": "01_shapefile.shp",
+    "schema": [
+      {
+        "name": "name",
+        "type": "Number || String || Boolean || Geometry ...",
+        "length": "Number"
+      }
+    ],
+    "geographicInfo": {
+      "done": false,
+      "value": {
+        "type": "Feature",
+        "properties": {
+          "GEOID": 516864,
+          "FASE": "2000"
+        },
+        "geometry": {
+          "type": "MultiPoint",
+          "coordinates": [[568244.3307745245, 4782578.271440068]]
         }
+      }
     }
+  }
 ]
 ```
 
