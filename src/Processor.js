@@ -89,6 +89,13 @@ class Processor {
     const geojson = await source.read();
     const geographicInfo = JSON.stringify(geojson);
 
+    // Retrieve if exists the .sld file
+    const sldFilePath = shapefilePath.replace(".shp", ".sld");
+    let hasSld = false;
+    if (fs.existsSync(sldFilePath)) {
+      hasSld = true;
+    }
+
     // Retrieve the data from .dbf file
     const dbfFilePath = shapefilePath.replace(".shp", ".dbf");
     const dbfData = await shapefile.openDbf(dbfFilePath);
@@ -127,6 +134,7 @@ class Processor {
     let res = {
       name: fileName.split(".")[0],
       fileName: fileName,
+      hasSld: hasSld,
       schema: schemaFields,
       geographicInfo: JSON.parse(geographicInfo)
     };
