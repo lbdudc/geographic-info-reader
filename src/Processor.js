@@ -116,9 +116,9 @@ class Processor {
       });
 
     const TYPES = {
-      Polygon: "MultiPolygon",
-      LineString: "MultiLineString",
-      Point: "MultiPoint",
+      Polygon: "Polygon",
+      LineString: "LineString",
+      Point: "Point",
       MultiPolygon: "MultiPolygon",
       MultiLineString: "MultiLineString",
       MultiPoint: "MultiPoint",
@@ -136,7 +136,7 @@ class Processor {
       fileName: fileName,
       hasSld: hasSld,
       schema: schemaFields,
-      geographicInfo: JSON.parse(geographicInfo)
+      geographicInfo: JSON.parse(geographicInfo),
     };
 
     // delete res keys if options.geographicInfo is false
