@@ -116,12 +116,12 @@ class Processor {
       });
 
     const TYPES = {
-      Polygon: "Polygon",
-      LineString: "LineString",
       Point: "Point",
-      MultiPolygon: "MultiPolygon",
-      MultiLineString: "MultiLineString",
       MultiPoint: "MultiPoint",
+      Polygon: "MultiPolygon",
+      MultiPolygon: "MultiPolygon",
+      LineString: "MultiLineString",
+      MultiLineString: "MultiLineString",
     };
 
     // Add the geographic field to the schema
