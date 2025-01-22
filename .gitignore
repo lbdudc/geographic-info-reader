@@ -11,6 +11,7 @@ node_modules
 *.iml
 test/testData/processor/input
 test/testData/processor/output
+test/testData/zipUtils
 coverage
 examples/output
 
