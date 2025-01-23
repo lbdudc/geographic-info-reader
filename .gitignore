@@ -11,9 +11,13 @@ node_modules
 *.iml
 test/testData/processor/input
 test/testData/processor/output
-test/testData/zipUtils
+test/testData/zipUtils/clearZip/input
+test/testData/zipUtils/clearZip/output
+test/testData/zipUtils/groupZip/input
+test/testData/zipUtils/groupZip/output
 coverage
 examples/output
+package-lock.json
 
 .env
 *.pem
