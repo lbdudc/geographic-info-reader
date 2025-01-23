@@ -1,5 +1,6 @@
 import fs from "fs";
 import shapefile from "shapefile";
+import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
 import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
 import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
@@ -28,8 +29,10 @@ class Processor {
     await unzipFiles(inputPathAbsolute, outputPathAbsolute);
 
     // Process the output folder
-    log(` -- PHASE (2/3): Process folder shapefiles ${outputPathAbsolute}`);
-    const res = await this.getSHPFolderInfo(outputPathAbsolute);
+    log(
+      ` -- PHASE (2/3): Process geographic files folder ${outputPathAbsolute}`,
+    );
+    const res = await this.getFolderInfo(outputPathAbsolute);
 
     // Reorder the output folder (group by shapefile) this clears the .shp, .dbf and .shx files
     log(
@@ -41,11 +44,11 @@ class Processor {
   }
 
   /**
-   * Process the folder and generate a json object with the information of the shapefiles
+   * Process the folder and generate a json object with the information of the geographic files
    * @param {String} folderPath
-   * @returns {Object} content with the information of the shapefiles
+   * @returns {Object} content with the information of the geographic files
    */
-  async getSHPFolderInfo(folderPath) {
+  async getFolderInfo(folderPath) {
     let absolutePath = getAbsolutePath(folderPath);
 
     log(`Processing folder ${absolutePath}`);
@@ -53,11 +56,11 @@ class Processor {
     let content = [];
     const files = await fs.promises.readdir(absolutePath);
 
-    // If file is a .shp, process it
     for (const file of files) {
-      if (file.endsWith(".shp")) {
-        const shapefilePath = absolutePath + path.sep + file;
-        const fileContent = await this._processShapefile(shapefilePath);
+      const fileProcessor = FileProcessorFactory.getFileProcessorForFile(file);
+      if (fileProcessor) {
+        const filePath = absolutePath + path.sep + file;
+        const fileContent = await fileProcessor.process(filePath, this.options);
         content.push(fileContent);
       }
     }

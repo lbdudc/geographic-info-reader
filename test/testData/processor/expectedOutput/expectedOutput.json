@@ -1,6 +1,7 @@
 [
   {
     "name": "01_water_collection",
+    "hasSld": true,
     "fileName": "01_water_collection.shp",
     "schema": [
       {
@@ -106,6 +107,7 @@
   },
   {
     "name": "02_main_fibrecement",
+    "hasSld": true,
     "fileName": "02_main_fibrecement.shp",
     "schema": [
       {
@@ -196,6 +198,7 @@
   },
   {
     "name": "03_distribution_fibrecement",
+    "hasSld": true,
     "fileName": "03_distribution_fibrecement.shp",
     "schema": [
       {
@@ -296,6 +299,7 @@
   },
   {
     "name": "04_main",
+    "hasSld": true,
     "fileName": "04_main.shp",
     "schema": [
       {
@@ -386,6 +390,7 @@
   },
   {
     "name": "05_distribution",
+    "hasSld": true,
     "fileName": "05_distribution.shp",
     "schema": [
       {
@@ -486,6 +491,7 @@
   },
   {
     "name": "06_populated_place",
+    "hasSld": true,
     "fileName": "06_populated_place.shp",
     "schema": [
       {
@@ -1301,6 +1307,7 @@
   },
   {
     "name": "07_municipality",
+    "hasSld": true,
     "fileName": "07_municipality.shp",
     "schema": [
       {
@@ -1321,6 +1328,202 @@
       {
         "name": "geometry",
         "type": "MultiPolygon"
+      }
+    ]
+  },
+  {
+    "name": "08_ctd_intecmar_2023-09-04",
+    "hasSld": true,
+    "fileName": "08_ctd_intecmar_2023-09-04.gpkg",
+    "schema": [
+      {
+        "name": "fid",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "geom",
+        "type": "Point"
+      },
+      {
+        "name": "profundidad_maxima",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "sampled_feature",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "codigo",
+        "type": "String",
+        "length": null
+      },
+      {
+        "name": "nombre",
+        "type": "String",
+        "length": null
+      },
+      {
+        "name": "descripcion",
+        "type": "String",
+        "length": null
+      },
+      {
+        "name": "procedure",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "feature_of_interest",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "phenomenon_time",
+        "type": "String",
+        "length": null
+      },
+      {
+        "name": "result_time",
+        "type": "String",
+        "length": null
+      },
+      {
+        "name": "sampling_geometry_height",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "temperatura_its90",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "salinidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "presion",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "ph",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "oxigeno",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "transmitancia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "irradiancia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "flourescencia_uv",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "flourescencia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "densidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "profundidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "temperatura_its68",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "conductividad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_temperatura_its90",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_salinidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_presion",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_ph",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_oxigeno",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_transmitacia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_irradiancia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_flourescencia_uv",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_flourescencia",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_densidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_profundidad",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_temperatura_its68",
+        "type": "Number",
+        "length": null
+      },
+      {
+        "name": "validacion_conductividad",
+        "type": "Number",
+        "length": null
       }
     ]
   }
