@@ -1,47 +1,26 @@
 import { FileProcessor } from "./FileProcessor";
-import path from "path";
-import log from "../utils/log.js";
 import shapefile from "shapefile";
-import fs from "fs";
-import { detectEncoding } from "../utils/utils.js";
 
 export class ShapefileProcessor extends FileProcessor {
-  constructor() {
-    super();
-  }
-
-  /**
-   * Process the shapefile and generate a json object with the information of the shapefile
-   * @param {String} filePath
-   * @returns {Object} content with the information of the shapefile
-   */
-  async process(filePath, options) {
-    // split the path to get the name of the file with "/"" or "\\"
-    const fileName = filePath.split(path.sep).pop();
-
-    // Detect the encoding of the shapefile
-    const encoding =
-      options.encoding === "auto" ? detectEncoding(filePath) : options.encoding;
-
-    log(`Processing ${fileName} with encoding ${encoding}`);
-
+  async open(filePath, encoding) {
+    const fileData = {};
     // Retrieve the geographic information from .shp file
-    const source = await shapefile.open(filePath, undefined, {
+    fileData.source = await shapefile.open(filePath, undefined, {
       encoding: encoding,
     });
-    const geojson = await source.read();
-    const geographicInfo = JSON.stringify(geojson);
-
-    // Retrieve if exists the .sld file
-    const sldFilePath = filePath.replace(".shp", ".sld");
-    let hasSld = false;
-    if (fs.existsSync(sldFilePath)) {
-      hasSld = true;
-    }
 
     // Retrieve the data from .dbf file
     const dbfFilePath = filePath.replace(".shp", ".dbf");
-    const dbfData = await shapefile.openDbf(dbfFilePath);
+    fileData.dbfData = await shapefile.openDbf(dbfFilePath);
+    return fileData;
+  }
+
+  async getSchemaFields(fileData) {
+    const source = fileData.source;
+    const geojson = await source.read();
+    const geographicInfo = JSON.stringify(geojson);
+
+    const dbfData = fileData.dbfData;
 
     // Retrieve the schema from .dbf file
     let schemaFields = dbfData._fields
@@ -74,17 +53,11 @@ export class ShapefileProcessor extends FileProcessor {
         TYPES[JSON.parse(geographicInfo).value?.geometry?.type] || "Geometry",
     });
 
-    let res = {
-      name: fileName.split(".")[0],
-      fileName: fileName,
-      hasSld: hasSld,
-      schema: schemaFields,
-      geographicInfo: JSON.parse(geographicInfo),
-    };
+    return schemaFields;
+  }
 
-    // delete res keys if options.geographicInfo is false
-    if (!options.geographicInfo) delete res.geographicInfo;
-
-    return res;
+  async getGeographicInfo(fileData) {
+    // Retrieve the geographic information from .shp file
+    return await fileData.source.read();
   }
 }

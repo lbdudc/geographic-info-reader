@@ -1,7 +1,4 @@
 import { FileProcessor } from "./FileProcessor";
-import path from "path";
-import log from "../utils/log.js";
-import { detectEncoding } from "../utils/utils.js";
 import fs from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
 
@@ -17,30 +14,47 @@ const GEOMETRY_TYPES = [
 ];
 
 export class GeopackageProcessor extends FileProcessor {
-  constructor() {
-    super();
+  async open(filePath) {
+    const geoPackageBuffer = fs.readFileSync(filePath);
+    return await GeoPackageAPI.open(geoPackageBuffer);
   }
 
-  async process(filePath, options) {
-    // split the path to get the name of the file with "/"" or "\\"
-    const fileName = filePath.split(path.sep).pop();
-
-    // Detect file encoding
-    const encoding =
-      options.encoding === "auto" ? detectEncoding(filePath) : options.encoding;
-
-    log(`Processing ${fileName} with encoding ${encoding}`);
-
-    const geoPackageBuffer = fs.readFileSync(filePath);
-    const geoPackage = await GeoPackageAPI.open(geoPackageBuffer);
-
+  async getSchemaFields(fileData) {
     // Obtener todas las tablas de la base de datos GeoPackage
-    const tables = geoPackage.getFeatureTables();
+    const tables = fileData.getFeatureTables();
     const schemaFields = [];
+
+    for (const table of tables) {
+      const featureDao = fileData.getFeatureDao(table);
+      // Obtener las columnas (atributos) de la tabla
+      const columns = featureDao.getFeatureTable().columns;
+      // Mostrar nombre, tipo y longitud de cada columna
+      for (let index = 0; index < columns.columnCount(); index++) {
+        const column = columns.getColumnForIndex(index);
+        if (column.isGeometry()) {
+          schemaFields.push({
+            name: column.getName(),
+            type: this._getGeometryTypeForIndex(column.getGeometryType()),
+          });
+        } else {
+          schemaFields.push({
+            name: column.getName(),
+            type: this._getTypeForGpkgDataType(column.getDataType()),
+            length: column.getMax(),
+          });
+        }
+      }
+    }
+    return schemaFields;
+  }
+
+  async getGeographicInfo(fileData) {
+    // Obtener todas las tablas de la base de datos GeoPackage
+    const tables = fileData.getFeatureTables();
     const features = [];
 
     for (const table of tables) {
-      const featureDao = geoPackage.getFeatureDao(table);
+      const featureDao = fileData.getFeatureDao(table);
       const featureIterator = featureDao.queryForAll();
 
       for (const row of featureIterator) {
@@ -68,45 +82,8 @@ export class GeopackageProcessor extends FileProcessor {
 
         features.push(feature);
       }
-      // Obtener las columnas (atributos) de la tabla
-      const columns = featureDao.getFeatureTable().columns;
-      // Mostrar nombre, tipo y longitud de cada columna
-      for (let index = 0; index < columns.columnCount(); index++) {
-        const column = columns.getColumnForIndex(index);
-        if (column.isGeometry()) {
-          schemaFields.push({
-            name: column.getName(),
-            type: this._getGeometryTypeForIndex(column.getGeometryType()),
-          });
-        } else {
-          schemaFields.push({
-            name: column.getName(),
-            type: this._getTypeForGpkgDataType(column.getDataType()),
-            length: column.getMax(),
-          });
-        }
-      }
     }
-
-    // Retrieve if exists the .sld file
-    const sldFilePath = filePath.replace(".gpkg", ".sld");
-    let hasSld = false;
-    if (fs.existsSync(sldFilePath)) {
-      hasSld = true;
-    }
-
-    let res = {
-      name: fileName.split(".")[0],
-      fileName: fileName,
-      hasSld: hasSld,
-      schema: schemaFields,
-      geographicInfo: features,
-    };
-
-    // delete res keys if options.geographicInfo is false
-    if (!options.geographicInfo) delete res.geographicInfo;
-
-    return res;
+    return features;
   }
 
   _getTypeForGpkgDataType(gpkgDataType) {
