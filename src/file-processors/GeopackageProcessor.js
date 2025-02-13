@@ -24,7 +24,8 @@ export class GeopackageProcessor extends FileProcessor {
     const tables = fileData.getFeatureTables();
     const schemaFields = [];
 
-    for (const table of tables) {
+    if (tables.length > 0) {
+      const table = tables[0];
       const featureDao = fileData.getFeatureDao(table);
       // Obtener las columnas (atributos) de la tabla
       const columns = featureDao.getFeatureTable().columns;
@@ -53,7 +54,8 @@ export class GeopackageProcessor extends FileProcessor {
     const tables = fileData.getFeatureTables();
     const features = [];
 
-    for (const table of tables) {
+    if (tables.length > 0) {
+      const table = tables[0];
       const featureDao = fileData.getFeatureDao(table);
       const featureIterator = featureDao.queryForAll();
 
