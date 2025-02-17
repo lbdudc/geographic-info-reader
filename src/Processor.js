@@ -52,10 +52,6 @@ class Processor {
           log(`- Zipping files`);
           await zipFilesGroupByShapefile(outputPathAbsolute);
           return res;
-        } else {
-          log(`- Copying files`);
-          //await copyFilesToOutput(outputPathAbsolute, outputPathAbsolute);
-          return res;
         }
       }
     }
