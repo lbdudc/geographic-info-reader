@@ -49,4 +49,8 @@ export class FileProcessor {
   getGeographicInfo() {
     throw new Error("getGeographicInfo method must be implemented");
   }
+
+  shouldZip() {
+    throw new Error("shouldZip method must be implemented");
+  }
 }

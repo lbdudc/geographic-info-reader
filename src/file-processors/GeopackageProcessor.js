@@ -1,4 +1,4 @@
-import { FileProcessor } from "./FileProcessor";
+import { FileProcessor } from "./FileProcessor.js";
 import fs from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
 
@@ -94,5 +94,9 @@ export class GeopackageProcessor extends FileProcessor {
 
   _getGeometryTypeForIndex(index) {
     return GEOMETRY_TYPES[index];
+  }
+
+  shouldZip() {
+    return false;
   }
 }

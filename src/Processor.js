@@ -1,7 +1,11 @@
 import fs from "fs";
 import shapefile from "shapefile";
 import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
-import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
+import {
+  copyFilesToOutput,
+  detectEncoding,
+  getAbsolutePath,
+} from "./utils/utils.js";
 import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
 import log from "./utils/log.js";
@@ -38,7 +42,23 @@ class Processor {
     log(
       ` -- PHASE (3/3): Reorder and clean the output folder ${outputPathAbsolute}`,
     );
-    await zipFilesGroupByShapefile(outputPathAbsolute);
+    const files = await fs.promises.readdir(outputPathAbsolute);
+    for (const file of files) {
+      const fileProcessor = FileProcessorFactory.getFileProcessorForFile(file);
+      if (fileProcessor) {
+        const shouldZip = fileProcessor.shouldZip();
+
+        if (shouldZip) {
+          log(`- Zipping files`);
+          await zipFilesGroupByShapefile(outputPathAbsolute);
+          return res;
+        } else {
+          log(`- Copying files`);
+          //await copyFilesToOutput(outputPathAbsolute, outputPathAbsolute);
+          return res;
+        }
+      }
+    }
 
     return res;
   }
