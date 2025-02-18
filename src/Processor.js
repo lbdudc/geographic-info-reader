@@ -1,11 +1,7 @@
 import fs from "fs";
 import shapefile from "shapefile";
 import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
-import {
-  copyFilesToOutput,
-  detectEncoding,
-  getAbsolutePath,
-} from "./utils/utils.js";
+import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
 import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
 import log from "./utils/log.js";
