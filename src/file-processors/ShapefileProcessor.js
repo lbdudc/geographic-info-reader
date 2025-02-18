@@ -1,4 +1,4 @@
-import { FileProcessor } from "./FileProcessor";
+import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
 
 export class ShapefileProcessor extends FileProcessor {
@@ -59,5 +59,9 @@ export class ShapefileProcessor extends FileProcessor {
   async getGeographicInfo(fileData) {
     // Retrieve the geographic information from .shp file
     return await fileData.source.read();
+  }
+
+  shouldZip() {
+    return true;
   }
 }

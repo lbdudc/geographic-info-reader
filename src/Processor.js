@@ -38,7 +38,19 @@ class Processor {
     log(
       ` -- PHASE (3/3): Reorder and clean the output folder ${outputPathAbsolute}`,
     );
-    await zipFilesGroupByShapefile(outputPathAbsolute);
+    const files = await fs.promises.readdir(outputPathAbsolute);
+    for (const file of files) {
+      const fileProcessor = FileProcessorFactory.getFileProcessorForFile(file);
+      if (fileProcessor) {
+        const shouldZip = fileProcessor.shouldZip();
+
+        if (shouldZip) {
+          log(`- Zipping files`);
+          await zipFilesGroupByShapefile(outputPathAbsolute);
+          return res;
+        }
+      }
+    }
 
     return res;
   }
