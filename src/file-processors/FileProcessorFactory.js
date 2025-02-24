@@ -1,7 +1,7 @@
 import { ShapefileProcessor } from "./ShapefileProcessor.js";
 import { GeopackageProcessor } from "./GeopackageProcessor.js";
 
-const SHP_EXT = ".shp";
+const SHP_EXT = ".zip";
 const GPKG_EXT = ".gpkg";
 
 const shapefileProcessor = new ShapefileProcessor();

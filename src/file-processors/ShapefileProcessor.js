@@ -1,7 +1,59 @@
 import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
+import { unzipFile } from "../utils/zipUtils.js";
+import path from "path";
+import { detectEncoding, getAbsolutePath } from "../utils/utils.js";
+import fs from "fs";
+import log from "../utils/log.js";
 
 export class ShapefileProcessor extends FileProcessor {
+  async process(filePath, options) {
+    // Decompress the file
+    if (filePath.endsWith(".zip")) {
+      const outCalc = !options.outputPath
+        ? `${path.dirname(filePath)}${path.sep}output`
+        : `${options.outputPath}${path.sep}output`;
+      const outputPathAbsolute = getAbsolutePath(outCalc);
+
+      const extractedFilePaths = await unzipFile(filePath, outputPathAbsolute);
+
+      // Process .shp file
+      const shpPath = extractedFilePaths.find((file) => file.endsWith(".shp"));
+      const shpName = path.basename(shpPath);
+
+      // Detect file encoding
+      const encoding =
+        options.encoding === "auto"
+          ? detectEncoding(shpPath)
+          : options.encoding;
+
+      log(`Processing ${filePath} with encoding ${encoding}`);
+
+      const fileData = await this.open(shpPath, encoding);
+
+      const schemaFields = await this.getSchemaFields(fileData);
+
+      const sldFilePath = shpPath.replace(/\.[^/.]+$/, ".sld");
+      let hasSld = false;
+      if (fs.existsSync(sldFilePath)) {
+        hasSld = true;
+      }
+
+      let res = {
+        name: shpName.split(".")[0],
+        fileName: shpName,
+        hasSld: hasSld,
+        schema: schemaFields,
+      };
+
+      if (options.geographicInfo) {
+        res.geographicInfo = await this.getGeographicInfo(fileData);
+      }
+
+      return res;
+    }
+  }
+
   async open(filePath, encoding) {
     const fileData = {};
     // Retrieve the geographic information from .shp file
