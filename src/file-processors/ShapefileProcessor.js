@@ -27,7 +27,7 @@ export class ShapefileProcessor extends FileProcessor {
           ? detectEncoding(shpPath)
           : options.encoding;
 
-      log(`Processing ${filePath} with encoding ${encoding}`);
+      log(`Processing ${shpPath} with encoding ${encoding}`);
 
       const fileData = await this.open(shpPath, encoding);
 

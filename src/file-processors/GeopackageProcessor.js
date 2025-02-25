@@ -1,6 +1,9 @@
 import { FileProcessor } from "./FileProcessor.js";
 import fs from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
+import path from "path";
+import { detectEncoding } from "../utils/utils.js";
+import log from "../utils/log.js";
 
 const NUMERIC_DATA_TYPES = [7, 6, 4, 5, 3, 8, 2, 1];
 const GEOMETRY_TYPES = [
@@ -14,6 +17,34 @@ const GEOMETRY_TYPES = [
 ];
 
 export class GeopackageProcessor extends FileProcessor {
+  async process(filePath, options) {
+    // Process .gpkg file
+    const gpkgPath = filePath;
+    const gpkgName = path.basename(gpkgPath);
+
+    // Detect file enconding
+    const encoding =
+      options.encoding === "auto" ? detectEncoding(gpkgPath) : options.encoding;
+
+    log(`Processing ${gpkgPath} with encoding ${encoding}`);
+
+    const fileData = await this.open(gpkgPath, encoding);
+
+    const schemaFields = await this.getSchemaFields(fileData);
+
+    let res = {
+      name: gpkgName.split(".")[0],
+      fileName: gpkgName,
+      schema: schemaFields,
+    };
+
+    if (options.geographicInfo) {
+      res.geographicInfo = await this.getGeographicInfo(fileData);
+    }
+
+    return res;
+  }
+
   async open(filePath) {
     const geoPackageBuffer = fs.readFileSync(filePath);
     return await GeoPackageAPI.open(geoPackageBuffer);
