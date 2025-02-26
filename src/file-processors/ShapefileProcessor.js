@@ -42,6 +42,7 @@ export class ShapefileProcessor extends FileProcessor {
       let res = {
         name: shpName.split(".")[0],
         fileName: shpName,
+        type: this.getFileType(),
         hasSld: hasSld,
         schema: schemaFields,
       };

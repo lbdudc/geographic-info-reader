@@ -35,6 +35,7 @@ export class GeopackageProcessor extends FileProcessor {
     let res = {
       name: gpkgName.split(".")[0],
       fileName: gpkgName,
+      type: this.getFileType(),
       schema: schemaFields,
     };
 
