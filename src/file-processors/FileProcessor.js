@@ -27,6 +27,7 @@ export class FileProcessor {
     let res = {
       name: fileName.split(".")[0],
       fileName: fileName,
+      type: this.getFileType(),
       hasSld: hasSld,
       schema: schemaFields,
     };
@@ -48,6 +49,10 @@ export class FileProcessor {
 
   getGeographicInfo() {
     throw new Error("getGeographicInfo method must be implemented");
+  }
+
+  getFileType() {
+    throw new Error("getFileType method must be implemented");
   }
 
   shouldZip() {
