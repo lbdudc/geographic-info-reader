@@ -27,6 +27,7 @@ export class FileProcessor {
     let res = {
       name: fileName.split(".")[0],
       fileName: fileName,
+      type: this.getFileType(),
       hasSld: hasSld,
       schema: schemaFields,
     };
