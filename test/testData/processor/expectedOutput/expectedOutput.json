@@ -1,6 +1,7 @@
 [
   {
     "name": "01_water_collection",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "01_water_collection.shp",
     "schema": [
@@ -107,6 +108,7 @@
   },
   {
     "name": "02_main_fibrecement",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "02_main_fibrecement.shp",
     "schema": [
@@ -198,6 +200,7 @@
   },
   {
     "name": "03_distribution_fibrecement",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "03_distribution_fibrecement.shp",
     "schema": [
@@ -299,6 +302,7 @@
   },
   {
     "name": "04_main",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "04_main.shp",
     "schema": [
@@ -390,6 +394,7 @@
   },
   {
     "name": "05_distribution",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "05_distribution.shp",
     "schema": [
@@ -491,6 +496,7 @@
   },
   {
     "name": "06_populated_place",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "06_populated_place.shp",
     "schema": [
@@ -1307,6 +1313,7 @@
   },
   {
     "name": "07_municipality",
+    "type": "shapefile",
     "hasSld": true,
     "fileName": "07_municipality.shp",
     "schema": [
@@ -1333,6 +1340,7 @@
   },
   {
     "name": "08_ctd_intecmar_2023-09-04",
+    "type": "geoPackage",
     "hasSld": true,
     "fileName": "08_ctd_intecmar_2023-09-04.gpkg",
     "schema": [

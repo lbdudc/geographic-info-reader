@@ -89,7 +89,7 @@ export class GeopackageProcessor extends FileProcessor {
   }
 
   getFileType() {
-    return "Geopackage";
+    return "geoPackage";
   }
 
   _getTypeForGpkgDataType(gpkgDataType) {

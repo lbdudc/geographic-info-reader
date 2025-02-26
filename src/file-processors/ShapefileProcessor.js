@@ -62,7 +62,7 @@ export class ShapefileProcessor extends FileProcessor {
   }
 
   getFileType() {
-    return "Shapefile";
+    return "shapefile";
   }
 
   shouldZip() {
