@@ -119,6 +119,10 @@ export class GeopackageProcessor extends FileProcessor {
     return features;
   }
 
+  getFileType() {
+    return "geoPackage";
+  }
+
   _getTypeForGpkgDataType(gpkgDataType) {
     return NUMERIC_DATA_TYPES.includes(gpkgDataType) ? "Number" : "String";
   }

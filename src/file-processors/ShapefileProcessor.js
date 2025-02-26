@@ -113,6 +113,10 @@ export class ShapefileProcessor extends FileProcessor {
     return await fileData.source.read();
   }
 
+  getFileType() {
+    return "shapefile";
+  }
+
   shouldZip() {
     return true;
   }

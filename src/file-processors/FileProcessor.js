@@ -15,6 +15,10 @@ export class FileProcessor {
     throw new Error("getGeographicInfo method must be implemented");
   }
 
+  getFileType() {
+    throw new Error("getFileType method must be implemented");
+  }
+
   shouldZip() {
     throw new Error("shouldZip method must be implemented");
   }
