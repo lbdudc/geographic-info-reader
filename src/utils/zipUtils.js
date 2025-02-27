@@ -5,6 +5,37 @@ import path from "path";
 import log from "./log.js";
 
 /**
+ * Unzips a .zip file
+ * @param zipPath
+ * @param outputFolder
+ * @returns {Promise<Array<String>>} extractedFilePaths
+ */
+export async function unzipFile(zipPath, outputFolder) {
+  log(`Extract .zip file ${zipPath} to ${outputFolder}`);
+  const zipData = fs.readFileSync(zipPath);
+  const zip = await JSZip.loadAsync(zipData);
+  const extractedFilePaths = [];
+
+  if (!fs.existsSync(outputFolder)) {
+    fs.mkdirSync(outputFolder, { recursive: true });
+  }
+
+  for (const [relativePath, file] of Object.entries(zip.files)) {
+    const outputPath = path.join(outputFolder, relativePath);
+    if (file.dir) {
+      fs.mkdirSync(outputPath, { recursive: true });
+    } else {
+      const content = await file.async("nodebuffer");
+      fs.writeFileSync(outputPath, content);
+      extractedFilePaths.push(outputPath);
+    }
+  }
+
+  log("Extraction completed!");
+  return extractedFilePaths;
+}
+
+/**
  * Unzips all .zip files in a folder
  * @param {String} folderPath
  */

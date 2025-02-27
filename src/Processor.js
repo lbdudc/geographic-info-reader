@@ -2,7 +2,7 @@ import fs from "fs";
 import shapefile from "shapefile";
 import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
 import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
-import { unzipFiles, zipFilesGroupByShapefile } from "./utils/zipUtils.js";
+import { zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
 import log from "./utils/log.js";
 
@@ -24,19 +24,15 @@ class Processor {
       : `${this.options.outputPath}${path.sep}output`;
     const outputPathAbsolute = getAbsolutePath(outCalc);
 
-    // Unzip into the output folder
-    log(` -- PHASE (1/3): Extract .zip files of folder ${inputPathAbsolute}`);
-    await unzipFiles(inputPathAbsolute, outputPathAbsolute);
-
     // Process the output folder
     log(
-      ` -- PHASE (2/3): Process geographic files folder ${outputPathAbsolute}`,
+      ` -- PHASE (1/2): Process geographic files folder ${inputPathAbsolute}`,
     );
-    const res = await this.getFolderInfo(outputPathAbsolute);
+    const res = await this.getFolderInfo(inputPathAbsolute);
 
     // Reorder the output folder (group by shapefile) this clears the .shp, .dbf and .shx files
     log(
-      ` -- PHASE (3/3): Reorder and clean the output folder ${outputPathAbsolute}`,
+      ` -- PHASE (2/2): Reorder and clean the output folder ${outputPathAbsolute}`,
     );
     const files = await fs.promises.readdir(outputPathAbsolute);
     for (const file of files) {

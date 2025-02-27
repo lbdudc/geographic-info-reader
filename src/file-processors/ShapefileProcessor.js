@@ -1,16 +1,34 @@
 import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
+import { unzipFile } from "../utils/zipUtils.js";
+import path from "path";
+import { getAbsolutePath } from "../utils/utils.js";
 
 export class ShapefileProcessor extends FileProcessor {
-  async open(filePath, encoding) {
+  async open(filePath, encoding, options) {
+    let shpPath = filePath;
+
+    // Decompress ZIP file
+    if (filePath.endsWith(".zip")) {
+      const outCalc = !options.outputPath
+        ? `${path.dirname(filePath)}${path.sep}output`
+        : `${options.outputPath}${path.sep}output`;
+      const outputPathAbsolute = getAbsolutePath(outCalc);
+
+      const extractedFilePaths = await unzipFile(filePath, outputPathAbsolute);
+
+      // Process .shp file
+      shpPath = extractedFilePaths.find((file) => file.endsWith(".shp"));
+    }
+
     const fileData = {};
     // Retrieve the geographic information from .shp file
-    fileData.source = await shapefile.open(filePath, undefined, {
+    fileData.source = await shapefile.open(shpPath, undefined, {
       encoding: encoding,
     });
 
     // Retrieve the data from .dbf file
-    const dbfFilePath = filePath.replace(".shp", ".dbf");
+    const dbfFilePath = shpPath.replace(".shp", ".dbf");
     fileData.dbfData = await shapefile.openDbf(dbfFilePath);
     return fileData;
   }

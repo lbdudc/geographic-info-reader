@@ -1,12 +1,11 @@
 import { detectEncoding } from "../utils/utils.js";
-import log from "../utils/log.js";
 import path from "path";
 import fs from "fs";
+import log from "../utils/log.js";
 
 export class FileProcessor {
   async process(filePath, options) {
-    // split the path to get the name of the file with "/"" or "\\"
-    const fileName = filePath.split(path.sep).pop();
+    const fileName = path.basename(filePath);
 
     // Detect file encoding
     const encoding =
@@ -14,7 +13,7 @@ export class FileProcessor {
 
     log(`Processing ${fileName} with encoding ${encoding}`);
 
-    const fileData = await this.open(filePath, encoding);
+    const fileData = await this.open(filePath, encoding, options);
 
     const schemaFields = await this.getSchemaFields(fileData);
 
