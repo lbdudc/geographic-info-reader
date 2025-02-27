@@ -3,7 +3,7 @@
     "name": "01_water_collection",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "01_water_collection.shp",
+    "fileName": "01_water_collection.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -110,7 +110,7 @@
     "name": "02_main_fibrecement",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "02_main_fibrecement.shp",
+    "fileName": "02_main_fibrecement.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -202,7 +202,7 @@
     "name": "03_distribution_fibrecement",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "03_distribution_fibrecement.shp",
+    "fileName": "03_distribution_fibrecement.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -304,7 +304,7 @@
     "name": "04_main",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "04_main.shp",
+    "fileName": "04_main.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -396,7 +396,7 @@
     "name": "05_distribution",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "05_distribution.shp",
+    "fileName": "05_distribution.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -498,7 +498,7 @@
     "name": "06_populated_place",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "06_populated_place.shp",
+    "fileName": "06_populated_place.zip",
     "schema": [
       {
         "name": "GEOID",
@@ -1315,7 +1315,7 @@
     "name": "07_municipality",
     "type": "shapefile",
     "hasSld": true,
-    "fileName": "07_municipality.shp",
+    "fileName": "07_municipality.zip",
     "schema": [
       {
         "name": "FASE",
