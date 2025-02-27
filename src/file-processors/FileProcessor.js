@@ -1,6 +1,45 @@
+import { detectEncoding } from "../utils/utils.js";
+import path from "path";
+import fs from "fs";
+import log from "../utils/log.js";
+
 export class FileProcessor {
   async process(filePath, options) {
-    throw new Error("process method must be implemented");
+    const fileName = path.basename(filePath);
+
+    // Detect file encoding
+    const encoding =
+      options.encoding === "auto" ? detectEncoding(filePath) : options.encoding;
+
+    log(`Processing ${fileName} with encoding ${encoding}`);
+
+    const [fileData, newFilePath] = await this.open(
+      filePath,
+      encoding,
+      options,
+    );
+
+    const schemaFields = await this.getSchemaFields(fileData);
+
+    const sldFilePath = newFilePath.replace(/\.[^/.]+$/, ".sld");
+    let hasSld = false;
+    if (fs.existsSync(sldFilePath)) {
+      hasSld = true;
+    }
+
+    let res = {
+      name: fileName.split(".")[0],
+      fileName: fileName,
+      type: this.getFileType(),
+      hasSld: hasSld,
+      schema: schemaFields,
+    };
+
+    if (options.geographicInfo) {
+      res.geographicInfo = await this.getGeographicInfo(fileData);
+    }
+
+    return res;
   }
 
   open() {

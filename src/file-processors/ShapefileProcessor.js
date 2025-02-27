@@ -2,13 +2,13 @@ import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
 import { unzipFile } from "../utils/zipUtils.js";
 import path from "path";
-import { detectEncoding, getAbsolutePath } from "../utils/utils.js";
-import fs from "fs";
-import log from "../utils/log.js";
+import { getAbsolutePath } from "../utils/utils.js";
 
 export class ShapefileProcessor extends FileProcessor {
-  async process(filePath, options) {
-    // Decompress the file
+  async open(filePath, encoding, options) {
+    let shpPath = filePath;
+
+    // Decompress ZIP file
     if (filePath.endsWith(".zip")) {
       const outCalc = !options.outputPath
         ? `${path.dirname(filePath)}${path.sep}output`
@@ -18,54 +18,19 @@ export class ShapefileProcessor extends FileProcessor {
       const extractedFilePaths = await unzipFile(filePath, outputPathAbsolute);
 
       // Process .shp file
-      const shpPath = extractedFilePaths.find((file) => file.endsWith(".shp"));
-      const shpName = path.basename(shpPath);
-
-      // Detect file encoding
-      const encoding =
-        options.encoding === "auto"
-          ? detectEncoding(shpPath)
-          : options.encoding;
-
-      log(`Processing ${shpPath} with encoding ${encoding}`);
-
-      const fileData = await this.open(shpPath, encoding);
-
-      const schemaFields = await this.getSchemaFields(fileData);
-
-      const sldFilePath = shpPath.replace(/\.[^/.]+$/, ".sld");
-      let hasSld = false;
-      if (fs.existsSync(sldFilePath)) {
-        hasSld = true;
-      }
-
-      let res = {
-        name: shpName.split(".")[0],
-        fileName: shpName,
-        type: this.getFileType(),
-        hasSld: hasSld,
-        schema: schemaFields,
-      };
-
-      if (options.geographicInfo) {
-        res.geographicInfo = await this.getGeographicInfo(fileData);
-      }
-
-      return res;
+      shpPath = extractedFilePaths.find((file) => file.endsWith(".shp"));
     }
-  }
 
-  async open(filePath, encoding) {
     const fileData = {};
     // Retrieve the geographic information from .shp file
-    fileData.source = await shapefile.open(filePath, undefined, {
+    fileData.source = await shapefile.open(shpPath, undefined, {
       encoding: encoding,
     });
 
     // Retrieve the data from .dbf file
-    const dbfFilePath = filePath.replace(".shp", ".dbf");
+    const dbfFilePath = shpPath.replace(".shp", ".dbf");
     fileData.dbfData = await shapefile.openDbf(dbfFilePath);
-    return fileData;
+    return [fileData, shpPath];
   }
 
   async getSchemaFields(fileData) {
