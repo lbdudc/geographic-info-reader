@@ -30,7 +30,7 @@ export class ShapefileProcessor extends FileProcessor {
     // Retrieve the data from .dbf file
     const dbfFilePath = shpPath.replace(".shp", ".dbf");
     fileData.dbfData = await shapefile.openDbf(dbfFilePath);
-    return [fileData, shpPath];
+    return fileData;
   }
 
   async getSchemaFields(fileData) {

@@ -13,15 +13,11 @@ export class FileProcessor {
 
     log(`Processing ${fileName} with encoding ${encoding}`);
 
-    const [fileData, newFilePath] = await this.open(
-      filePath,
-      encoding,
-      options,
-    );
+    const fileData = await this.open(filePath, encoding, options);
 
     const schemaFields = await this.getSchemaFields(fileData);
 
-    const sldFilePath = newFilePath.replace(/\.[^/.]+$/, ".sld");
+    const sldFilePath = filePath.replace(/\.[^/.]+$/, ".sld");
     let hasSld = false;
     if (fs.existsSync(sldFilePath)) {
       hasSld = true;

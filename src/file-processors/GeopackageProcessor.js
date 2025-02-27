@@ -16,8 +16,7 @@ const GEOMETRY_TYPES = [
 export class GeopackageProcessor extends FileProcessor {
   async open(filePath) {
     const geoPackageBuffer = fs.readFileSync(filePath);
-    const fileData = await GeoPackageAPI.open(geoPackageBuffer);
-    return [fileData, filePath];
+    return await GeoPackageAPI.open(geoPackageBuffer);
   }
 
   async getSchemaFields(fileData) {
