@@ -113,6 +113,51 @@ export async function zipFilesGroupByShapefile(folderPath) {
   await clearFolder(folderPath, zipFiles.concat(sldFiles));
 }
 
+export async function zipFilesGroupByGeoTiff(folderPath) {
+  log(`Zip files of folder ${folderPath}`);
+
+  // Read the files of the folder
+  let files = fs.readdirSync(folderPath);
+
+  // Group the files by shapefile, omitting the .sld files
+  const filesByShapefile = {};
+  for (const file of files) {
+    if (file.endsWith(".sld")) {
+      continue;
+    }
+    const shapefileName = file.substring(0, file.lastIndexOf("."));
+    if (!filesByShapefile[shapefileName]) {
+      filesByShapefile[shapefileName] = [];
+    }
+    filesByShapefile[shapefileName].push(file);
+  }
+
+  // Zip the files of each shapefile
+  for (const shapefileName of Object.keys(filesByShapefile)) {
+    const files = filesByShapefile[shapefileName];
+    const zip = new JSZip();
+
+    for (const file of files) {
+      const filePath = folderPath + path.sep + file;
+      const fileData = fs.readFileSync(filePath);
+      zip.file(file, fileData);
+    }
+
+    const zipFilePath = folderPath + path.sep + shapefileName + ".zip";
+    const content = await zip.generateAsync({ type: "nodebuffer" });
+    fs.writeFileSync(zipFilePath, content);
+  }
+
+  // Get the list of .zip files and .sld files
+  files = fs.readdirSync(folderPath);
+  const zipFiles = files.filter((file) => file.endsWith(".zip"));
+  const sldFiles = files.filter((file) => file.endsWith(".sld"));
+
+  // Clear the folder of all files except .zip files and .sld files
+  log("Clearing folder", folderPath);
+  await clearFolder(folderPath, zipFiles.concat(sldFiles));
+}
+
 /**
  * Unzips all .zip files in a folder recursively
  * @param {String} folderPath

@@ -28,7 +28,7 @@ class Processor {
     log(
       ` -- PHASE (1/2): Process geographic files folder ${inputPathAbsolute}`,
     );
-    const res = await this.getFolderInfo(inputPathAbsolute);
+    const res = await this.getFolderInfo(inputPathAbsolute, outputPathAbsolute);
 
     // Reorder the output folder (group by shapefile) this clears the .shp, .dbf and .shx files
     log(
@@ -36,7 +36,16 @@ class Processor {
     );
     const files = await fs.promises.readdir(outputPathAbsolute);
     for (const file of files) {
-      const fileProcessor = FileProcessorFactory.getFileProcessorForFile(file);
+      let fileProcessor;
+      try {
+        fileProcessor = await FileProcessorFactory.getFileProcessorForFile(
+          file,
+          inputPathAbsolute,
+          outputPathAbsolute,
+        );
+      } catch (error) {
+        console.error("Skipping invalid file");
+      }
       if (fileProcessor) {
         const shouldZip = fileProcessor.shouldZip();
 
@@ -54,9 +63,10 @@ class Processor {
   /**
    * Process the folder and generate a json object with the information of the geographic files
    * @param {String} folderPath
+   * @param outputPathAbsolute
    * @returns {Object} content with the information of the geographic files
    */
-  async getFolderInfo(folderPath) {
+  async getFolderInfo(folderPath, outputPathAbsolute) {
     let absolutePath = getAbsolutePath(folderPath);
 
     log(`Processing folder ${absolutePath}`);
@@ -65,7 +75,18 @@ class Processor {
     const files = await fs.promises.readdir(absolutePath);
 
     for (const file of files) {
-      const fileProcessor = FileProcessorFactory.getFileProcessorForFile(file);
+      let fileProcessor;
+
+      try {
+        fileProcessor = await FileProcessorFactory.getFileProcessorForFile(
+          file,
+          absolutePath,
+          outputPathAbsolute,
+        );
+      } catch (error) {
+        console.error("Skipping invalid file" + error);
+      }
+
       if (fileProcessor) {
         const filePath = absolutePath + path.sep + file;
         const fileContent = await fileProcessor.process(filePath, this.options);
