@@ -29,7 +29,7 @@ async function getFileProcessorForFile(
     await copyFile(inputPathAbsolute, outputPathAbsolute, file);
     return geotiffProcessor;
   } else if (file.endsWith(ZIP_EXT)) {
-    return await areGeotiffOrGeopackage(
+    return await areGeotiffOrShapefile(
       file,
       inputPathAbsolute,
       outputPathAbsolute,
@@ -38,7 +38,7 @@ async function getFileProcessorForFile(
   throw new Error("Not supported file type/s");
 }
 
-async function areGeotiffOrGeopackage(
+async function areGeotiffOrShapefile(
   file,
   inputPathAbsolute,
   outputPathAbsolute,
