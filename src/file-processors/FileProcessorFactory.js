@@ -4,11 +4,10 @@ import { GeoTiffProcessor } from "./GeotiffProcessor.js";
 import path from "path";
 import { unzipFile } from "../utils/zipUtils.js";
 
-const SHP_EXT = ".shp";
+const SHP_EXTS = [".shp", ".dbf", ".prj", ".cpg", ".shx"];
 const GPKG_EXT = ".gpkg";
 const TIFF_EXT = ".tif";
 const ZIP_EXT = ".zip";
-const OTHER_SHP_EXTS = [".dbf", ".prj", ".cpg", ".shx"];
 
 const fs = require("fs").promises;
 
@@ -21,24 +20,23 @@ async function getFileProcessorForFile(
   inputPathAbsolute,
   outputPathAbsolute,
 ) {
-  if (file.endsWith(SHP_EXT)) {
+  if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
     return shapefileProcessor;
   } else if (file.endsWith(GPKG_EXT)) {
     return geopackageProcessor;
   } else if (file.endsWith(TIFF_EXT)) {
-    await copyFile(inputPathAbsolute, outputPathAbsolute, file);
     return geotiffProcessor;
   } else if (file.endsWith(ZIP_EXT)) {
-    return await areGeotiffOrShapefile(
+    return await getFileProcessorForZip(
       file,
       inputPathAbsolute,
       outputPathAbsolute,
     );
   }
-  throw new Error("Not supported file type/s");
+  return null;
 }
 
-async function areGeotiffOrShapefile(
+async function getFileProcessorForZip(
   file,
   inputPathAbsolute,
   outputPathAbsolute,
@@ -49,27 +47,26 @@ async function areGeotiffOrShapefile(
     outputPathAbsolute,
   );
 
-  let areGeotiffFiles = false;
-  let areShapeFiles = false;
-  let areOtherTypes = false;
+  let hasGeotiffFiles = false;
+  let hasShapeFiles = false;
+  let hasOtherTypes = false;
 
   for (let extractedFilePath of extractedFilePaths) {
     if (extractedFilePath.endsWith(TIFF_EXT)) {
-      areGeotiffFiles = true;
-    } else if (extractedFilePath.endsWith(SHP_EXT)) {
-      areShapeFiles = true;
-    } else if (OTHER_SHP_EXTS.some((ext) => extractedFilePath.endsWith(ext))) {
-      continue;
+      hasGeotiffFiles = true;
+    } else if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
+      hasShapeFiles = true;
     } else {
-      areOtherTypes = true;
+      hasOtherTypes = true;
+    }
+    if (hasOtherTypes || (hasGeotiffFiles && hasShapeFiles)) {
+      throw new Error("Not supported combination of file types");
     }
   }
 
-  if (areOtherTypes || (areGeotiffFiles && areShapeFiles)) {
-    throw new Error("Not supported combination of file types");
-  } else if (areShapeFiles) {
+  if (hasShapeFiles) {
     return shapefileProcessor;
-  } else if (areGeotiffFiles) {
+  } else if (hasGeotiffFiles) {
     await copyFile(inputPathAbsolute, outputPathAbsolute, file);
     await Promise.all(
       extractedFilePaths.map(async (filePath) => {

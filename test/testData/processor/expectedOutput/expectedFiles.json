@@ -1,12 +1,20 @@
 [
+  "01_water_collection.sld",
   "01_water_collection.zip",
+  "02_main_fibrecement.sld",
   "02_main_fibrecement.zip",
+  "03_distribution_fibrecement.sld",
   "03_distribution_fibrecement.zip",
+  "04_main.sld",
   "04_main.zip",
+  "05_distribution.sld",
   "05_distribution.zip",
+  "06_populated_place.sld",
   "06_populated_place.zip",
+  "07_municipality.sld",
   "07_municipality.zip",
+  "08_ctd_intecmar_2023-09-04.sld",
+  "08_ctd_intecmar_2023-09-04.gpkg",
   "09_PNOA_MDT25_ETRS89_HU30_0022_LID.zip",
-  "08_ctd_intecmar_2023-09-04.zip",
   "10_Ferrol.zip"
 ]
