@@ -45,3 +45,63 @@ export const getAbsolutePath = (folderPath) => {
   }
   return path.join(process.cwd(), folderPath);
 };
+
+/**
+ * Copies all files from a source directory to the output directory without compressing them
+ * @param {String} sourceDirectory - Path of the source directory
+ * @param {String} outputDirectory - Destination directory
+ */
+export async function copyFilesToOutput(sourceDirectory, outputDirectory) {
+  try {
+    // Create output directory if it does not exist
+    if (!fs.existsSync(outputDirectory)) {
+      fs.mkdirSync(outputDirectory, { recursive: true });
+    }
+
+    const files = await fs.promises.readdir(sourceDirectory);
+
+    for (const file of files) {
+      const sourcePath = path.join(sourceDirectory, file);
+      const destPath = path.join(outputDirectory, file);
+
+      const stats = await fs.promises.stat(sourcePath);
+
+      if (stats.isFile()) {
+        await fs.promises.copyFile(sourcePath, destPath);
+        log(`Copied file: ${file} to ${destPath}`);
+      }
+    }
+  } catch (error) {
+    log(
+      `Error copying files from ${sourceDirectory} to ${outputDirectory}: ${error.message}`,
+    );
+  }
+}
+
+export function copyFile(inputPathAbsolute, outputPathAbsolute) {
+  return new Promise((resolve, reject) => {
+    const outputDirectory = path.dirname(outputPathAbsolute);
+    if (!fs.existsSync(outputDirectory)) {
+      try {
+        fs.mkdirSync(outputDirectory, { recursive: true });
+        console.log(`Directorio creado: ${outputPathAbsolute}`);
+      } catch (err) {
+        return reject(
+          new Error(`Error al crear el directorio de destino: ${err.message}`),
+        );
+      }
+    }
+
+    fs.copyFile(inputPathAbsolute, outputPathAbsolute, (err) => {
+      if (err) {
+        console.error(`Error copying file: ${err.message}`);
+        reject(err);
+      } else {
+        console.log(
+          `File copied from ${inputPathAbsolute} to ${outputPathAbsolute}`,
+        );
+        resolve();
+      }
+    });
+  });
+}

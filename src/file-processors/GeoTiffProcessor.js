@@ -1,8 +1,17 @@
 import { FileProcessor } from "./FileProcessor.js";
+import path from "path";
+import { copyFile, getAbsolutePath } from "../utils/utils.js";
+import { unzipFile } from "../utils/zipUtils.js";
 
 export class GeoTiffProcessor extends FileProcessor {
   async open(filePath, encoding, options) {
-    return;
+    const outCalc = !options.outputPath
+      ? `${path.dirname(filePath)}${path.sep}output`
+      : `${options.outputPath}${path.sep}output`;
+    const outputPathAbsolute = getAbsolutePath(outCalc);
+    const fileName = path.basename(filePath);
+    const outputPath = `${outputPathAbsolute}/${fileName}`;
+    await copyFile(filePath, outputPath);
   }
 
   async getSchemaFields(fileData) {

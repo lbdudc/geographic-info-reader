@@ -3,6 +3,8 @@ import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
 import path from "path";
 import { unzipFile } from "../utils/zipUtils.js";
+import { copyFile } from "../utils/utils.js";
+import JSZip from "jszip";
 
 const SHP_EXTS = [".shp", ".dbf", ".prj", ".cpg", ".shx"];
 const GPKG_EXT = ".gpkg";
@@ -20,18 +22,18 @@ async function getFileProcessorForFile(
   inputPathAbsolute,
   outputPathAbsolute,
 ) {
-  if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
-    return shapefileProcessor;
-  } else if (file.endsWith(GPKG_EXT)) {
-    return geopackageProcessor;
-  } else if (file.endsWith(TIFF_EXT)) {
-    return geotiffProcessor;
-  } else if (file.endsWith(ZIP_EXT)) {
+  if (file.endsWith(ZIP_EXT)) {
     return await getFileProcessorForZip(
       file,
       inputPathAbsolute,
       outputPathAbsolute,
     );
+  } else if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
+    return shapefileProcessor;
+  } else if (file.endsWith(GPKG_EXT)) {
+    return geopackageProcessor;
+  } else if (file.endsWith(TIFF_EXT)) {
+    return geotiffProcessor;
   }
   return null;
 }
@@ -41,20 +43,16 @@ async function getFileProcessorForZip(
   inputPathAbsolute,
   outputPathAbsolute,
 ) {
-  const extractedFilePaths = await zipExtractFilePaths(
-    file,
-    inputPathAbsolute,
-    outputPathAbsolute,
-  );
+  const extractedFileNames = await listFilesInZip(inputPathAbsolute, file);
 
   let hasGeotiffFiles = false;
   let hasShapeFiles = false;
   let hasOtherTypes = false;
 
-  for (let extractedFilePath of extractedFilePaths) {
-    if (extractedFilePath.endsWith(TIFF_EXT)) {
+  for (let extractedFileName of extractedFileNames) {
+    if (extractedFileName.endsWith(TIFF_EXT)) {
       hasGeotiffFiles = true;
-    } else if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
+    } else if (SHP_EXTS.some((ext) => extractedFileName.endsWith(ext))) {
       hasShapeFiles = true;
     } else {
       hasOtherTypes = true;
@@ -63,42 +61,22 @@ async function getFileProcessorForZip(
       throw new Error("Not supported combination of file types");
     }
   }
-
   if (hasShapeFiles) {
     return shapefileProcessor;
   } else if (hasGeotiffFiles) {
-    await copyFile(inputPathAbsolute, outputPathAbsolute, file);
-    await Promise.all(
-      extractedFilePaths.map(async (filePath) => {
-        try {
-          await fs.unlink(filePath);
-        } catch (error) {
-          console.error(`Error deleting file ${filePath}:`, error);
-        }
-      }),
-    );
-
     return geotiffProcessor;
   }
 }
 
-async function copyFile(inputPathAbsolute, outputPathAbsolute, file) {
-  const originalZipFilePath = `${inputPathAbsolute}/${file}`;
-  const destinationPath = `${outputPathAbsolute}/${file}`;
-  await fs.copyFile(originalZipFilePath, destinationPath);
-}
+async function listFilesInZip(inputPath, file) {
+  const zip = new JSZip();
+  const fullFilePath = path.join(inputPath, file);
+  const fileData = await fs.readFile(fullFilePath);
+  const zipData = await zip.loadAsync(fileData); // Cargar el ZIP en memoria
 
-async function zipExtractFilePaths(
-  file,
-  inputPathAbsolute,
-  outputPathAbsolute,
-) {
-  const filePath = `${inputPathAbsolute}/${file}`;
-  const outputPath = outputPathAbsolute
-    ? outputPathAbsolute
-    : `${path.dirname(filePath)}${path.sep}output`;
+  const fileNames = Object.keys(zipData.files); // Obtener los nombres de los archivos
 
-  return await unzipFile(filePath, outputPath);
+  return fileNames;
 }
 
 export default { getFileProcessorForFile };

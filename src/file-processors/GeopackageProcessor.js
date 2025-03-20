@@ -1,6 +1,8 @@
 import { FileProcessor } from "./FileProcessor.js";
 import fs from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
+import path from "path";
+import { copyFile, getAbsolutePath } from "../utils/utils.js";
 
 const NUMERIC_DATA_TYPES = [7, 6, 4, 5, 3, 8, 2, 1];
 const GEOMETRY_TYPES = [
@@ -14,7 +16,15 @@ const GEOMETRY_TYPES = [
 ];
 
 export class GeopackageProcessor extends FileProcessor {
-  async open(filePath) {
+  async open(filePath, encoding, options) {
+    const outCalc = !options.outputPath
+      ? `${path.dirname(filePath)}${path.sep}output`
+      : `${options.outputPath}${path.sep}output`;
+    const outputPathAbsolute = getAbsolutePath(outCalc);
+    const fileName = path.basename(filePath);
+    const outputPath = `${outputPathAbsolute}/${fileName}`;
+    await copyFile(filePath, outputPath);
+
     const geoPackageBuffer = fs.readFileSync(filePath);
     return await GeoPackageAPI.open(geoPackageBuffer);
   }
