@@ -87,7 +87,6 @@ class Processor {
         fileProcessor = await FileProcessorFactory.getFileProcessorForFile(
           file,
           absolutePath,
-          outputPathAbsolute,
         );
       } catch (error) {
         console.error("Skipping invalid file" + error);

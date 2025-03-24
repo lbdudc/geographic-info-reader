@@ -15,17 +15,9 @@ const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
 const geotiffProcessor = new GeoTiffProcessor();
 
-async function getFileProcessorForFile(
-  file,
-  inputPathAbsolute,
-  outputPathAbsolute,
-) {
+async function getFileProcessorForFile(file, inputPathAbsolute) {
   if (file.endsWith(ZIP_EXT)) {
-    return await getFileProcessorForZip(
-      file,
-      inputPathAbsolute,
-      outputPathAbsolute,
-    );
+    return await getFileProcessorForZip(file, inputPathAbsolute);
   } else if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
     return shapefileProcessor;
   } else if (file.endsWith(GPKG_EXT)) {
@@ -36,11 +28,7 @@ async function getFileProcessorForFile(
   return null;
 }
 
-async function getFileProcessorForZip(
-  file,
-  inputPathAbsolute,
-  outputPathAbsolute,
-) {
+async function getFileProcessorForZip(file, inputPathAbsolute) {
   const extractedFileNames = await listFilesInZip(inputPathAbsolute, file);
 
   let hasGeotiffFiles = false;
