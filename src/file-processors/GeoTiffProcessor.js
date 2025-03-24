@@ -1,7 +1,6 @@
 import { FileProcessor } from "./FileProcessor.js";
 import path from "path";
 import { copyFile, getAbsolutePath } from "../utils/utils.js";
-import { unzipFile } from "../utils/zipUtils.js";
 
 export class GeoTiffProcessor extends FileProcessor {
   async open(filePath, encoding, options) {

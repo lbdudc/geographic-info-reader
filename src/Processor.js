@@ -1,10 +1,12 @@
 import fs from "fs";
 import shapefile from "shapefile";
 import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
-import { detectEncoding, getAbsolutePath } from "./utils/utils.js";
+import { copyFile, detectEncoding, getAbsolutePath } from "./utils/utils.js";
 import { zipFilesGroupByShapefile } from "./utils/zipUtils.js";
 import path from "path";
 import log from "./utils/log.js";
+
+const SLD_EXT = ".sld";
 
 class Processor {
   constructor(options) {
@@ -75,8 +77,12 @@ class Processor {
     const files = await fs.promises.readdir(absolutePath);
 
     for (const file of files) {
+      if (file.endsWith(SLD_EXT)) {
+        const inputPath = `${absolutePath}/${file}`;
+        const outputPath = `${outputPathAbsolute}/${file}`;
+        await copyFile(inputPath, outputPath);
+      }
       let fileProcessor;
-
       try {
         fileProcessor = await FileProcessorFactory.getFileProcessorForFile(
           file,

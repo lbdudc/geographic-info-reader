@@ -2,8 +2,6 @@ import { ShapefileProcessor } from "./ShapefileProcessor.js";
 import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
 import path from "path";
-import { unzipFile } from "../utils/zipUtils.js";
-import { copyFile } from "../utils/utils.js";
 import JSZip from "jszip";
 
 const SHP_EXTS = [".shp", ".dbf", ".prj", ".cpg", ".shx"];

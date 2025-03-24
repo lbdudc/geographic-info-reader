@@ -75,7 +75,6 @@ export async function zipFilesGroupByShapefile(folderPath) {
 
   // Read the files of the folder
   let files = fs.readdirSync(folderPath);
-  console.log(files);
 
   // Group the files by shapefile, omitting the other extension files
   const filesByShapefile = {};
