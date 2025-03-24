@@ -45,3 +45,27 @@ export const getAbsolutePath = (folderPath) => {
   }
   return path.join(process.cwd(), folderPath);
 };
+
+export function copyFile(inputPathAbsolute, outputPathAbsolute) {
+  return new Promise((resolve, reject) => {
+    const outputDirectory = path.dirname(outputPathAbsolute);
+    if (!fs.existsSync(outputDirectory)) {
+      try {
+        fs.mkdirSync(outputDirectory, { recursive: true });
+      } catch (err) {
+        return reject(
+          new Error(`Error al crear el directorio de destino: ${err.message}`),
+        );
+      }
+    }
+
+    fs.copyFile(inputPathAbsolute, outputPathAbsolute, (err) => {
+      if (err) {
+        console.error(`Error copying file: ${err.message}`);
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}

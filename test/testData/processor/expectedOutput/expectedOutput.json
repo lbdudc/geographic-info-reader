@@ -1534,5 +1534,19 @@
         "length": null
       }
     ]
+  },
+  {
+    "fileName": "09_PNOA_MDT25_ETRS89_HU30_0022_LID.tif",
+    "hasSld": false,
+    "name": "09_PNOA_MDT25_ETRS89_HU30_0022_LID",
+    "schema": [],
+    "type": "geoTIFF"
+  },
+  {
+    "fileName": "10_Ferrol.zip",
+    "hasSld": false,
+    "name": "10_Ferrol",
+    "schema": [],
+    "type": "geoTIFF"
   }
 ]

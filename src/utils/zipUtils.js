@@ -4,6 +4,8 @@ import { clearFolder } from "./utils.js";
 import path from "path";
 import log from "./log.js";
 
+const skippExt = [".sld", ".tif", ".gpkg", ".zip"];
+
 /**
  * Unzips a .zip file
  * @param zipPath
@@ -74,10 +76,10 @@ export async function zipFilesGroupByShapefile(folderPath) {
   // Read the files of the folder
   let files = fs.readdirSync(folderPath);
 
-  // Group the files by shapefile, omitting the .sld files
+  // Group the files by shapefile, omitting the other extension files
   const filesByShapefile = {};
   for (const file of files) {
-    if (file.endsWith(".sld")) {
+    if (skippExt.some((ext) => file.endsWith(ext))) {
       continue;
     }
     const shapefileName = file.substring(0, file.lastIndexOf("."));
@@ -107,10 +109,16 @@ export async function zipFilesGroupByShapefile(folderPath) {
   files = fs.readdirSync(folderPath);
   const zipFiles = files.filter((file) => file.endsWith(".zip"));
   const sldFiles = files.filter((file) => file.endsWith(".sld"));
+  const othersExtToKeep = files.filter((file) =>
+    skippExt.some((ext) => file.endsWith(ext)),
+  );
 
-  // Clear the folder of all files except .zip files and .sld files
+  // Clear the folder of all files except .zip files and .sld files and others extensions
   log("Clearing folder", folderPath);
-  await clearFolder(folderPath, zipFiles.concat(sldFiles));
+  await clearFolder(
+    folderPath,
+    zipFiles.concat(sldFiles).concat(othersExtToKeep),
+  );
 }
 
 /**
