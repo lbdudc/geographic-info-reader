@@ -1,39 +1,39 @@
-# Shapefile Reader
+# Geographic Information Reader
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen.svg)
-![npm version](https://badge.fury.io/js/shapefile-reader.svg)
+![npm version](https://badge.fury.io/js/@lbdudc%2Fgp-geographic-info-reader.svg)
 
 ## Description
 
-The library offers comprehensive functionalities to process shapefiles, parsing them into a structured JSON format. By invoking the provided methods, users can easily navigate through the geographical and attribute data associated with each shapefile contained within a designated folder.
+The library offers comprehensive functionalities to process geographic information files, parsing them into a structured JSON format. By invoking the provided methods, users can easily navigate through the geographical and attribute data associated with each geofile contained within a designated folder.
 
 ## Installation
 
 Install the package via npm:
 
 ```bash
-npm install @lbdudc/gp-shapefile-reader
+npm install @lbdudc/gp-geographic-info-reader
 ```
 
 ## Usage
 
-This library simplifies the reading and processing of shapefiles. To utilize its functionalities:
+This library simplifies the reading and processing of geographic information files. To utilize its functionalities:
 
 1. **Input:** Refer to the "Input" section to understand the supported file formats and their requirements.
 
 2. **Initialization:** Create an instance of the Processor class, configuring it with the desired options.
 
-3. **Path Specification:** Provide the path to the folder containing the shapefiles to the Processor instance.
+3. **Path Specification:** Provide the path to the folder containing the geographic information files to the Processor instance.
 
 4. **Output:** Check the "Output" section for details on the generated output structure and file formats.
 
-Once initialized and provided with the necessary inputs, the Processor will generate a comprehensive JSON representation. This representation includes both geographical and attribute data associated with each shapefile.
+Once initialized and provided with the necessary inputs, the Processor will generate a comprehensive JSON representation. This representation includes both geographical and attribute data associated with each geographic info file.
 
 ```js
-import Processor from "@lbdudc/gp-shapefile-reader";
+import Processor from "@lbdudc/gp-geographic-info-reader";
 
-// Define the path to the folder containing the shapefiles
+// Define the path to the folder containing the geographic information files
 const inputPath = "./examples/shpfiles";
 const outputPath = "./examples"; // By default, the output path is the same as the inputPath appended with '/output'
 
@@ -41,12 +41,12 @@ const outputPath = "./examples"; // By default, the output path is the same as t
 const processor = new Processor({
   encoding: "utf-8", // Set the file encoding: 'auto' (default), 'ascii', 'utf8', 'utf-8', 'latin1', 'binary', 'base64', 'hex'
   geographicInfo: false, // Include geographic information in the output (default: true)
-  outputPath: outputPath, // Optional: designate a specific folder for processed shapefiles
+  outputPath: outputPath, // Optional: designate a specific folder for processed geographic info files
 });
 
-// Process the folder containing the shapefiles
+// Process the folder containing the geographic info files
 processor.processFolder(inputPath).then((content) => {
-  // Returns an array of objects, each representing a shapefile
+  // Returns an array of objects, each representing a file
   // Refer to the Output JSON section for more information
   console.log(content);
 });
@@ -56,18 +56,18 @@ processor.processFolder(inputPath).then((content) => {
 
 ### Input
 
-This library supports processing geographic data stored in Shapefile format. It accepts:
+This library supports processing geographic data stored in different geographic information files format. It accepts:
 
 - Individual files with extensions: `.shp`, `.cpg`, `.dbf`, `.prj`, `.qpj`, `.shx`.
-- Compressed data with Shapefile information in a `.zip` file.
+- Compressed data with Geographic information in a `.zip` file.
 
 The library efficiently handles these inputs for easy manipulation and analysis of geographic data.
 
-**Note:** Ensure associated files share the same base name for the shapefile. Failure to do so may result in processing errors or incomplete data.
+**Note:** Ensure associated files share the same base name for the file. Failure to do so may result in processing errors or incomplete data.
 
 ### Output
 
-The output folder will contain the Shapefiles zipped by their respective names.
+The output folder will contain the geographic information files zipped by their respective names.
 
 #### Example
 
@@ -84,7 +84,7 @@ When processed using this library, the output folder will include a zip file nam
 
 ### Output JSON
 
-The object returned by the processFolder method is an array of objects, one for each shapefile. Each object contains the following properties:
+The object returned by the processFolder method is an array of objects, one for each geographic info file. Each object contains the following properties:
 
 ```json
 [
