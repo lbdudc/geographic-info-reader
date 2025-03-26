@@ -16,15 +16,7 @@ const GEOMETRY_TYPES = [
 ];
 
 export class GeopackageProcessor extends FileProcessor {
-  async open(filePath, encoding, options) {
-    const outCalc = !options.outputPath
-      ? `${path.dirname(filePath)}${path.sep}output`
-      : `${options.outputPath}${path.sep}output`;
-    const outputPathAbsolute = getAbsolutePath(outCalc);
-    const fileName = path.basename(filePath);
-    const outputPath = `${outputPathAbsolute}/${fileName}`;
-    await copyFile(filePath, outputPath);
-
+  async open(filePath) {
     const geoPackageBuffer = fs.readFileSync(filePath);
     return await GeoPackageAPI.open(geoPackageBuffer);
   }
@@ -110,7 +102,13 @@ export class GeopackageProcessor extends FileProcessor {
     return GEOMETRY_TYPES[index];
   }
 
-  shouldZip() {
-    return false;
+  async writeFileToOutput(filePath, outputPath) {
+    const outCalc = !outputPath
+      ? `${path.dirname(filePath)}${path.sep}output`
+      : `${outputPath}${path.sep}output`;
+    const outputPathAbsolute = getAbsolutePath(outCalc);
+    const fileName = path.basename(filePath);
+    const fileOutputPath = `${outputPathAbsolute}/${fileName}`;
+    await copyFile(filePath, fileOutputPath);
   }
 }

@@ -17,6 +17,8 @@ export class FileProcessor {
 
     const schemaFields = await this.getSchemaFields(fileData);
 
+    await this.writeFileToOutput(filePath, options.outputPath);
+
     const sldFilePath = filePath.replace(/\.[^/.]+$/, ".sld");
     let hasSld = false;
     if (fs.existsSync(sldFilePath)) {
@@ -54,7 +56,7 @@ export class FileProcessor {
     throw new Error("getFileType method must be implemented");
   }
 
-  shouldZip() {
-    throw new Error("shouldZip method must be implemented");
+  writeFileToOutput() {
+    throw new Error("writeFileToOutput method must be implemented");
   }
 }

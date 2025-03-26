@@ -3,6 +3,8 @@ import path from "path";
 import jschardet from "jschardet";
 import log from "./log.js";
 
+const skippExt = [".sld", ".tif", ".gpkg", ".zip"];
+
 /**
  * Detects the encoding of a file
  * @param {String} filePath
@@ -19,15 +21,18 @@ export function detectEncoding(filePath) {
  * @param {String} folderPath
  * @param {Array} filesBefore
  */
-export async function clearFolder(folderPath, filesBefore = []) {
+export async function clearShapefileRawFiles(folderPath, shapefileName) {
   log(`Clearing folder ${folderPath}`);
-  log(`Files before: ${filesBefore}`);
+  log(`Shapefile name: ${shapefileName}`);
 
   const files = fs.readdirSync(folderPath);
 
   // Delete all files except the ones that were in the folder before the process
   for (const file of files) {
-    if (!filesBefore.includes(file)) {
+    if (
+      shapefileName == path.parse(file).name &&
+      !skippExt.some((ext) => file.endsWith(ext))
+    ) {
       const filePath = folderPath + path.sep + file;
       fs.unlinkSync(filePath);
       log(`File ${filePath} deleted`);
