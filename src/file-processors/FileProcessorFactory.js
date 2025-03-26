@@ -1,3 +1,4 @@
+import fs from "fs";
 import { ShapefileProcessor } from "./ShapefileProcessor.js";
 import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
@@ -8,8 +9,6 @@ const SHP_EXTS = [".shp", ".dbf", ".prj", ".cpg", ".shx"];
 const GPKG_EXT = ".gpkg";
 const TIFF_EXT = ".tif";
 const ZIP_EXT = ".zip";
-
-const fs = require("fs").promises;
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
@@ -57,7 +56,7 @@ async function getFileProcessorForZip(file, inputPathAbsolute) {
 async function listFilesInZip(inputPath, file) {
   const zip = new JSZip();
   const fullFilePath = path.join(inputPath, file);
-  const fileData = await fs.readFile(fullFilePath);
+  const fileData = await fs.promises.readFile(fullFilePath);
   const zipData = await zip.loadAsync(fileData); // Cargar el ZIP en memoria
 
   const fileNames = Object.keys(zipData.files); // Obtener los nombres de los archivos
