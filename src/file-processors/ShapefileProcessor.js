@@ -1,6 +1,6 @@
 import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
-import { unzipFile } from "../utils/zipUtils.js";
+import { unzipFile, zipFilesGroupByShapefile } from "../utils/zipUtils.js";
 import path from "path";
 import { getAbsolutePath } from "../utils/utils.js";
 
@@ -83,7 +83,12 @@ export class ShapefileProcessor extends FileProcessor {
     return "shapefile";
   }
 
-  shouldZip() {
-    return true;
+  async writeFileToOutput(filePath, outputPath) {
+    const outCalc = !outputPath
+      ? `${path.dirname(filePath)}${path.sep}output`
+      : `${outputPath}${path.sep}output`;
+    const outputPathAbsolute = getAbsolutePath(outCalc);
+    const fileName = path.parse(filePath).name;
+    await zipFilesGroupByShapefile(outputPathAbsolute, fileName);
   }
 }

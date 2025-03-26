@@ -64,4 +64,4 @@ describe("Processor", () => {
 
     expect(res).toStrictEqual(expectedJSONRes);
   });
-}, 100000);
+}, 5000);

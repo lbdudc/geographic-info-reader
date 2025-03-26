@@ -1,13 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { unzipFiles, zipFilesGroupByShapefile } from "../src/utils/zipUtils.js";
-import fs, {
-  rmSync,
-  existsSync,
-  readdirSync,
-  readFileSync,
-  readSync,
-  mkdirSync,
-} from "fs";
+import { unzipFile, zipFilesGroupByShapefile } from "../src/utils/zipUtils.js";
+import { copyFile } from "../src/utils/utils.js";
+import fs, { rmSync, existsSync, readdirSync, readFileSync } from "fs";
+import path from "path";
 
 describe("Zip Utils", () => {
   test("Unzip files in an non-existent output folder.", async () => {
@@ -36,7 +31,20 @@ describe("Zip Utils", () => {
     );
 
     // Execute the function
-    await unzipFiles(folderPath, outputFolder);
+    const files = fs.readdirSync(folderPath);
+
+    for (const file of files) {
+      if (file.endsWith(".zip")) {
+        await unzipFile(
+          `${tempInputFolderPath}${path.sep}${file}`,
+          outputFolder,
+        );
+      } else {
+        const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
+        const outputPath = `${outputFolder}${path.sep}${file}`;
+        await copyFile(inputPath, outputPath);
+      }
+    }
 
     // Expect that the output folder is created
     expect(existsSync(outputFolder)).toBe(true);
@@ -57,6 +65,7 @@ describe("Zip Utils", () => {
     const testFolderPath = "./test/testData/zipUtils/groupZip";
     const inputFolderPath = "./test/testData/inputOnlyShapeFile";
     const tempInputFolderPath = `${testFolderPath}/input`;
+    const shapefileExts = [".zip", ".shp"];
 
     // Copy the files from the input folder to the temp input folder
     fs.cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
@@ -71,9 +80,27 @@ describe("Zip Utils", () => {
     const folderPath = `${tempInputFolderPath}`;
     const outputFolder = `${testFolderPath}/output`;
 
-    await unzipFiles(folderPath, outputFolder);
+    const files = fs.readdirSync(folderPath);
 
-    await zipFilesGroupByShapefile(outputFolder);
+    for (const file of files) {
+      if (file.endsWith(".zip")) {
+        await unzipFile(
+          `${tempInputFolderPath}${path.sep}${file}`,
+          outputFolder,
+        );
+      } else {
+        const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
+        const outputPath = `${outputFolder}${path.sep}${file}`;
+        await copyFile(inputPath, outputPath);
+      }
+    }
+
+    for (const file of files) {
+      const filePath = path.parse(file);
+      if (shapefileExts.some((ext) => filePath.ext == ext)) {
+        await zipFilesGroupByShapefile(outputFolder, filePath.name);
+      }
+    }
 
     // Expect that the output folder is created
     expect(existsSync(outputFolder)).toBe(true);
@@ -93,7 +120,6 @@ describe("Zip Utils", () => {
     // Remove the temp input folder
     rmSync(`${tempInputFolderPath}`, { recursive: true, force: true });
   });
-
   test("Unzip files in a folder with no.zip files.", async () => {
     const inputFolderPath = "./test/testData/input";
     const testFolderPath = "./test/testData/zipUtils/noZip";
@@ -108,7 +134,20 @@ describe("Zip Utils", () => {
     expect(existsSync(`${testFolderPath}/output`)).toBe(false);
 
     try {
-      await unzipFiles(`${tempInputFolderPath} `, `${testFolderPath}/output`);
+      const files = fs.readdirSync(tempInputFolderPath);
+
+      for (const file of files) {
+        if (file.endsWith(".zip")) {
+          await unzipFile(
+            `${tempInputFolderPath}${path.sep}${file}`,
+            `${testFolderPath}/output`,
+          );
+        } else {
+          const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
+          const outputPath = `${testFolderPath}${path.sep}${file}`;
+          await copyFile(inputPath, outputPath);
+        }
+      }
     } catch (error) {
       // Find in the error message the words: no such file or directory
       expect(error.message).toMatch(/no such file or directory/);

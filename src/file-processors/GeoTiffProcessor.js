@@ -3,21 +3,15 @@ import path from "path";
 import { copyFile, getAbsolutePath } from "../utils/utils.js";
 
 export class GeoTiffProcessor extends FileProcessor {
-  async open(filePath, encoding, options) {
-    const outCalc = !options.outputPath
-      ? `${path.dirname(filePath)}${path.sep}output`
-      : `${options.outputPath}${path.sep}output`;
-    const outputPathAbsolute = getAbsolutePath(outCalc);
-    const fileName = path.basename(filePath);
-    const outputPath = `${outputPathAbsolute}/${fileName}`;
-    await copyFile(filePath, outputPath);
+  async open() {
+    return null;
   }
 
-  async getSchemaFields(fileData) {
+  async getSchemaFields() {
     return [];
   }
 
-  async getGeographicInfo(fileData) {
+  async getGeographicInfo() {
     return;
   }
 
@@ -25,7 +19,13 @@ export class GeoTiffProcessor extends FileProcessor {
     return "geoTIFF";
   }
 
-  shouldZip() {
-    return false;
+  async writeFileToOutput(filePath, outputPath) {
+    const outCalc = !outputPath
+      ? `${path.dirname(filePath)}${path.sep}output`
+      : `${outputPath}${path.sep}output`;
+    const outputPathAbsolute = getAbsolutePath(outCalc);
+    const fileName = path.basename(filePath);
+    const fileOutputPath = `${outputPathAbsolute}/${fileName}`;
+    await copyFile(filePath, fileOutputPath);
   }
 }
