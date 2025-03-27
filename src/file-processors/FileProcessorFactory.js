@@ -4,11 +4,12 @@ import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
 import path from "path";
 import JSZip from "jszip";
-
-const SHP_EXTS = [".shp", ".dbf", ".prj", ".cpg", ".shx"];
-const GPKG_EXT = ".gpkg";
-const TIFF_EXT = ".tif";
-const ZIP_EXT = ".zip";
+import {
+  SHP_EXTS,
+  GPKG_EXT,
+  TIFF_EXT,
+  ZIP_EXT,
+} from "../utils/file-extensions";
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
