@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import jschardet from "jschardet";
 import log from "./log.js";
-
-const skippExt = [".sld", ".tif", ".gpkg", ".zip"];
+import { SKIP_ZIP_EXTS } from "./file-extensions";
 
 /**
  * Detects the encoding of a file
@@ -31,7 +30,7 @@ export async function clearShapefileRawFiles(folderPath, shapefileName) {
   for (const file of files) {
     if (
       shapefileName == path.parse(file).name &&
-      !skippExt.some((ext) => file.endsWith(ext))
+      !SKIP_ZIP_EXTS.some((ext) => file.endsWith(ext))
     ) {
       const filePath = folderPath + path.sep + file;
       fs.unlinkSync(filePath);

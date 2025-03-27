@@ -3,8 +3,7 @@ import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
 import { copyFile, getAbsolutePath } from "./utils/utils.js";
 import path from "path";
 import log from "./utils/log.js";
-
-const SLD_EXT = ".sld";
+import { SLD_EXT } from "./utils/file-extensions.js";
 
 class Processor {
   constructor(options) {

@@ -3,13 +3,14 @@ import shapefile from "shapefile";
 import { unzipFile, zipFilesGroupByShapefile } from "../utils/zipUtils.js";
 import path from "path";
 import { getAbsolutePath } from "../utils/utils.js";
+import { ZIP_EXT } from "../utils/file-extensions.js";
 
 export class ShapefileProcessor extends FileProcessor {
   async open(filePath, encoding, options) {
     let shpPath = filePath;
 
     // Decompress ZIP file
-    if (filePath.endsWith(".zip")) {
+    if (filePath.endsWith(ZIP_EXT)) {
       const outCalc = !options.outputPath
         ? `${path.dirname(filePath)}${path.sep}output`
         : `${options.outputPath}${path.sep}output`;

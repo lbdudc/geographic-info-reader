@@ -3,8 +3,7 @@ import JSZip from "jszip";
 import { clearShapefileRawFiles } from "./utils.js";
 import path from "path";
 import log from "./log.js";
-
-const skippExt = [".sld", ".tif", ".gpkg", ".zip"];
+import { SKIP_ZIP_EXTS } from "./file-extensions";
 
 /**
  * Unzips a .zip file
@@ -51,7 +50,7 @@ export async function zipFilesGroupByShapefile(folderPath, shapefileName) {
   const filesByShapefile = [];
   for (const file of files) {
     if (
-      skippExt.some((ext) => file.endsWith(ext)) ||
+      SKIP_ZIP_EXTS.some((ext) => file.endsWith(ext)) ||
       path.parse(file).name !== shapefileName
     ) {
       continue;
@@ -77,7 +76,7 @@ export async function zipFilesGroupByShapefile(folderPath, shapefileName) {
   const zipFiles = files.filter((file) => file.endsWith(".zip"));
   const sldFiles = files.filter((file) => file.endsWith(".sld"));
   const othersExtToKeep = files.filter((file) =>
-    skippExt.some((ext) => file.endsWith(ext)),
+    SKIP_ZIP_EXTS.some((ext) => file.endsWith(ext)),
   );
 
   // Clear the folder of all files except .zip files and .sld files and others extensions
