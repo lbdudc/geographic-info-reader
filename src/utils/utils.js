@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import jschardet from "jschardet";
 import log from "./log.js";
-import { SKIP_ZIP_EXTS } from "./file-extensions";
+import { SKIP_ZIP_EXTS } from "./file-extensions.js";
 
 /**
  * Detects the encoding of a file

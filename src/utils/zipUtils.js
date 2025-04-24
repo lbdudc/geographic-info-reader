@@ -3,7 +3,7 @@ import JSZip from "jszip";
 import { clearShapefileRawFiles } from "./utils.js";
 import path from "path";
 import log from "./log.js";
-import { SKIP_ZIP_EXTS } from "./file-extensions";
+import { SKIP_ZIP_EXTS } from "./file-extensions.js";
 
 /**
  * Unzips a .zip file
