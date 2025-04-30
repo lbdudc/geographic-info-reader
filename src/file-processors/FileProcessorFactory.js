@@ -9,6 +9,7 @@ import {
   GPKG_EXT,
   TIFF_EXT,
   ZIP_EXT,
+  SHP_EXT,
 } from "../utils/file-extensions";
 
 const shapefileProcessor = new ShapefileProcessor();
@@ -18,7 +19,7 @@ const geotiffProcessor = new GeoTiffProcessor();
 async function getFileProcessorForFile(file, inputPathAbsolute) {
   if (file.endsWith(ZIP_EXT)) {
     return await getFileProcessorForZip(file, inputPathAbsolute);
-  } else if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
+  } else if (file.endsWith(SHP_EXT)) {
     return shapefileProcessor;
   } else if (file.endsWith(GPKG_EXT)) {
     return geopackageProcessor;
