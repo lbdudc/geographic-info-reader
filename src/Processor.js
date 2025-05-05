@@ -29,9 +29,9 @@ class Processor {
     let content = [];
     const files = await fs.promises.readdir(absolutePath);
 
-    //copy shapefiles extensions to ouput
+    //copy sld
     for (const file of files) {
-      if (SHP_EXTS.some((ext) => file.endsWith(ext))) {
+      if (file.endsWith(SLD_EXT)) {
         const inputPath = `${absolutePath}/${file}`;
         const outputPath = `${outputPathAbsolute}/${file}`;
         await copyFile(inputPath, outputPath);
