@@ -6,6 +6,7 @@ import path from "path";
 import JSZip from "jszip";
 import {
   SHP_EXTS,
+  SHP_EXT,
   GPKG_EXT,
   TIFF_EXT,
   ZIP_EXT,
