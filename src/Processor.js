@@ -3,7 +3,7 @@ import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
 import { copyFile, getAbsolutePath } from "./utils/utils.js";
 import path from "path";
 import log from "./utils/log.js";
-import { SLD_EXT } from "./utils/file-extensions.js";
+import { SHP_EXTS, SLD_EXT } from "./utils/file-extensions.js";
 
 class Processor {
   constructor(options) {
@@ -29,12 +29,18 @@ class Processor {
     let content = [];
     const files = await fs.promises.readdir(absolutePath);
 
+    //copy sld and shapefiles
     for (const file of files) {
-      if (file.endsWith(SLD_EXT)) {
+      if (
+        file.endsWith(SLD_EXT) ||
+        SHP_EXTS.some((ext) => file.endsWith(ext))
+      ) {
         const inputPath = `${absolutePath}/${file}`;
         const outputPath = `${outputPathAbsolute}/${file}`;
         await copyFile(inputPath, outputPath);
       }
+    }
+    for (const file of files) {
       let fileProcessor;
       try {
         fileProcessor = await FileProcessorFactory.getFileProcessorForFile(
