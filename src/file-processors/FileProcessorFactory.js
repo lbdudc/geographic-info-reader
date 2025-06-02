@@ -9,8 +9,7 @@ import {
   GPKG_EXT,
   TIFF_EXT,
   ZIP_EXT,
-  SHP_EXT,
-} from "../utils/file-extensions";
+} from "../utils/file-extensions.js";
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
