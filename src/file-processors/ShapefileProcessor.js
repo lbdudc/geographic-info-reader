@@ -16,10 +16,7 @@ export class ShapefileProcessor extends FileProcessor {
     const outputPathAbsolute = getAbsolutePath(outCalc);
     // Decompress ZIP file
     if (filePath.endsWith(ZIP_EXT)) {
-      const onlyCopySld = true;
       const extractedFilePaths = await unzipFile(filePath, outputPathAbsolute);
-      await this.copyNecessaryFiles(shpPath, outputPathAbsolute, onlyCopySld);
-
       // Process .shp file
       shpPath = extractedFilePaths.find((file) => file.endsWith(".shp"));
     } else await this.copyNecessaryFiles(shpPath, outputPathAbsolute);
