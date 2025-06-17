@@ -3,7 +3,7 @@ import shapefile from "shapefile";
 import { unzipFile, zipFilesGroupByShapefile } from "../utils/zipUtils.js";
 import path from "path";
 import { copyFile, getAbsolutePath } from "../utils/utils.js";
-import { SHP_EXTS, SLD_EXT, ZIP_EXT } from "../utils/file-extensions.js";
+import { SHP_EXTS, ZIP_EXT } from "../utils/file-extensions.js";
 import fs from "fs";
 
 export class ShapefileProcessor extends FileProcessor {

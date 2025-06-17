@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { unzipFile, zipFilesGroupByShapefile } from "../src/utils/zipUtils.js";
 import { copyFile } from "../src/utils/utils.js";
-import fs, { rmSync, existsSync, readdirSync, readFileSync } from "fs";
+import { cpSync, rmSync, existsSync, readdirSync, readFileSync } from "fs";
 import path from "path";
 
 describe("Zip Utils", () => {
@@ -12,7 +12,7 @@ describe("Zip Utils", () => {
     const tempInputFolderPath = `${testFolderPath}/input`;
 
     // Copy the files from the input folder to the temp input folder
-    fs.cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
+    cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
       recursive: true,
       force: true,
     });
@@ -31,7 +31,7 @@ describe("Zip Utils", () => {
     );
 
     // Execute the function
-    const files = fs.readdirSync(folderPath);
+    const files = readdirSync(folderPath);
 
     for (const file of files) {
       if (file.endsWith(".zip")) {
@@ -68,7 +68,7 @@ describe("Zip Utils", () => {
     const shapefileExts = [".zip", ".shp"];
 
     // Copy the files from the input folder to the temp input folder
-    fs.cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
+    cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
       recursive: true,
       force: true,
     });
@@ -80,7 +80,7 @@ describe("Zip Utils", () => {
     const folderPath = `${tempInputFolderPath}`;
     const outputFolder = `${testFolderPath}/output`;
 
-    const files = fs.readdirSync(folderPath);
+    const files = readdirSync(folderPath);
 
     for (const file of files) {
       if (file.endsWith(".zip")) {
@@ -126,7 +126,7 @@ describe("Zip Utils", () => {
     const tempInputFolderPath = `${testFolderPath}/input`;
 
     // Copy the files from the input folder to the temp input folder
-    fs.cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
+    cpSync(`${inputFolderPath}`, `${tempInputFolderPath}`, {
       recursive: true,
       force: true,
     });
@@ -134,7 +134,7 @@ describe("Zip Utils", () => {
     expect(existsSync(`${testFolderPath}/output`)).toBe(false);
 
     try {
-      const files = fs.readdirSync(tempInputFolderPath);
+      const files = readdirSync(tempInputFolderPath);
 
       for (const file of files) {
         if (file.endsWith(".zip")) {

@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readFileSync } from "fs";
 import { ShapefileProcessor } from "./ShapefileProcessor.js";
 import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
@@ -63,7 +63,7 @@ async function getFileProcessorForZip(file, inputPathAbsolute) {
 async function listFilesInZip(inputPath, file) {
   const zip = new JSZip();
   const fullFilePath = path.join(inputPath, file);
-  const fileData = await fs.promises.readFile(fullFilePath);
+  const fileData = readFileSync(fullFilePath);
   const zipData = await zip.loadAsync(fileData); // Cargar el ZIP en memoria
 
   const fileNames = Object.keys(zipData.files); // Obtener los nombres de los archivos

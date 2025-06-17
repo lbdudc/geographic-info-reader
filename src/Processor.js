@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readdirSync } from "fs";
 import FileProcessorFactory from "./file-processors/FileProcessorFactory.js";
 import { getAbsolutePath } from "./utils/utils.js";
 import path from "path";
@@ -21,7 +21,7 @@ class Processor {
     log(`Processing folder ${absolutePath}`);
 
     let content = [];
-    const files = fs.readdirSync(absolutePath);
+    const files = readdirSync(absolutePath);
 
     for (const file of files) {
       let fileProcessor;

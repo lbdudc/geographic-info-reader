@@ -1,5 +1,5 @@
 import { FileProcessor } from "./FileProcessor.js";
-import fs from "fs";
+import { readFileSync } from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
 import path from "path";
 import { copyFile, getAbsolutePath } from "../utils/utils.js";
@@ -17,7 +17,7 @@ const GEOMETRY_TYPES = [
 
 export class GeopackageProcessor extends FileProcessor {
   async open(filePath) {
-    const geoPackageBuffer = fs.readFileSync(filePath);
+    const geoPackageBuffer = readFileSync(filePath);
     return await GeoPackageAPI.open(geoPackageBuffer);
   }
 

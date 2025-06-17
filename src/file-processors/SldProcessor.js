@@ -1,6 +1,6 @@
 import { FileProcessor } from "./FileProcessor.js";
 import path from "path";
-import { copyFile, detectEncoding, getAbsolutePath } from "../utils/utils.js";
+import { copyFile, getAbsolutePath } from "../utils/utils.js";
 
 export class SldProcessor extends FileProcessor {
   async process(filePath, options) {
