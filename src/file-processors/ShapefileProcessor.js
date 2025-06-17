@@ -2,9 +2,9 @@ import { FileProcessor } from "./FileProcessor.js";
 import shapefile from "shapefile";
 import { unzipFile, zipFilesGroupByShapefile } from "../utils/zipUtils.js";
 import path from "path";
-import { copyFile, getAbsolutePath } from "../utils/utils.js";
+import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 import { SHP_EXTS, ZIP_EXT } from "../utils/file-extensions.js";
-import fs from "fs";
+import { readdirSync } from "fs";
 
 export class ShapefileProcessor extends FileProcessor {
   async open(filePath, encoding, options) {
@@ -95,7 +95,7 @@ export class ShapefileProcessor extends FileProcessor {
   async copyNecessaryFiles(shpPath, outputPath) {
     const baseName = path.basename(shpPath, path.extname(shpPath));
     const inputPath = path.dirname(shpPath);
-    const files = fs.readdirSync(inputPath);
+    const files = readdirSync(inputPath);
 
     for (const file of files) {
       const ext = path.extname(file).toLowerCase();
@@ -103,7 +103,10 @@ export class ShapefileProcessor extends FileProcessor {
       const isValidExt = SHP_EXTS.includes(ext);
 
       if (name === baseName && isValidExt) {
-        await copyFile(path.join(inputPath, file), path.join(outputPath, file));
+        await customCopyFile(
+          path.join(inputPath, file),
+          path.join(outputPath, file),
+        );
       }
     }
   }

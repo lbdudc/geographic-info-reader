@@ -1,6 +1,6 @@
 import { FileProcessor } from "./FileProcessor.js";
 import path from "path";
-import { copyFile, getAbsolutePath } from "../utils/utils.js";
+import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 
 export class GeoTiffProcessor extends FileProcessor {
   async open() {
@@ -26,6 +26,6 @@ export class GeoTiffProcessor extends FileProcessor {
     const outputPathAbsolute = getAbsolutePath(outCalc);
     const fileName = path.basename(filePath);
     const fileOutputPath = `${outputPathAbsolute}/${fileName}`;
-    await copyFile(filePath, fileOutputPath);
+    await customCopyFile(filePath, fileOutputPath);
   }
 }

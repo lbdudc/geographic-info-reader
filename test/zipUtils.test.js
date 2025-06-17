@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { unzipFile, zipFilesGroupByShapefile } from "../src/utils/zipUtils.js";
-import { copyFile } from "../src/utils/utils.js";
+import { customCopyFile } from "../src/utils/utils.js";
 import { cpSync, rmSync, existsSync, readdirSync, readFileSync } from "fs";
 import path from "path";
 
@@ -42,7 +42,7 @@ describe("Zip Utils", () => {
       } else {
         const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
         const outputPath = `${outputFolder}${path.sep}${file}`;
-        await copyFile(inputPath, outputPath);
+        await customCopyFile(inputPath, outputPath);
       }
     }
 
@@ -91,7 +91,7 @@ describe("Zip Utils", () => {
       } else {
         const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
         const outputPath = `${outputFolder}${path.sep}${file}`;
-        await copyFile(inputPath, outputPath);
+        await customCopyFile(inputPath, outputPath);
       }
     }
 
@@ -145,7 +145,7 @@ describe("Zip Utils", () => {
         } else {
           const inputPath = `${tempInputFolderPath}${path.sep}${file}`;
           const outputPath = `${testFolderPath}${path.sep}${file}`;
-          await copyFile(inputPath, outputPath);
+          await customCopyFile(inputPath, outputPath);
         }
       }
     } catch (error) {

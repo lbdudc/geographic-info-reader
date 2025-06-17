@@ -2,7 +2,7 @@ import { FileProcessor } from "./FileProcessor.js";
 import { readFileSync } from "fs";
 import { GeoPackageAPI } from "@ngageoint/geopackage";
 import path from "path";
-import { copyFile, getAbsolutePath } from "../utils/utils.js";
+import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 
 const NUMERIC_DATA_TYPES = [7, 6, 4, 5, 3, 8, 2, 1];
 const GEOMETRY_TYPES = [
@@ -109,6 +109,6 @@ export class GeopackageProcessor extends FileProcessor {
     const outputPathAbsolute = getAbsolutePath(outCalc);
     const fileName = path.basename(filePath);
     const fileOutputPath = `${outputPathAbsolute}/${fileName}`;
-    await copyFile(filePath, fileOutputPath);
+    await customCopyFile(filePath, fileOutputPath);
   }
 }
