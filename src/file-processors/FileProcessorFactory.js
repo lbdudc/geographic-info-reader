@@ -10,11 +10,14 @@ import {
   GPKG_EXT,
   TIFF_EXT,
   ZIP_EXT,
+  SLD_EXT,
 } from "../utils/file-extensions.js";
+import { SldProcessor } from "./SldProcessor.js";
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
 const geotiffProcessor = new GeoTiffProcessor();
+const sldProcessor = new SldProcessor();
 
 async function getFileProcessorForFile(file, inputPathAbsolute) {
   if (file.endsWith(ZIP_EXT)) {
@@ -25,6 +28,8 @@ async function getFileProcessorForFile(file, inputPathAbsolute) {
     return geopackageProcessor;
   } else if (file.endsWith(TIFF_EXT)) {
     return geotiffProcessor;
+  } else if (file.endsWith(SLD_EXT)) {
+    return sldProcessor;
   }
   return null;
 }
