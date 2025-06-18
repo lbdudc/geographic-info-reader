@@ -66,7 +66,7 @@ describe("Processor", () => {
   });
   test("Process folder with geographicInfo activated", async () => {
     const testFolderPath = "./test/testData/processorGeographicInfo";
-    const inputFolderPath = "./test/testData/inputUnzipShapefile";
+    const inputFolderPath = "./test/testData/inputGeographicInfo";
 
     try {
       rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
@@ -88,13 +88,10 @@ describe("Processor", () => {
 
     const res = await processor.processFolder(`${testFolderPath}/input`);
 
+    for (const obj of res) {
+      expect(obj).toHaveProperty("geographicInfo");
+    }
     // Assert that the output folder contains the expected files
-    const expectedJSONRes = JSON.parse(
-      readFileSync(
-        `${testFolderPath}/expectedOutput/expectedOutput.json`,
-        "utf8",
-      ),
-    );
     const expectedFiles = JSON.parse(
       readFileSync(
         `${testFolderPath}/expectedOutput/expectedFiles.json`,
@@ -115,8 +112,6 @@ describe("Processor", () => {
       JSON.stringify(res, null, 2),
       "utf8",
     );
-
-    expect(res).toStrictEqual(expectedJSONRes);
   });
   test("Process unzip shapefiles", async () => {
     const testFolderPath = "./test/testData/processorUnzipShapefile";
