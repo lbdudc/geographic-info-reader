@@ -24,3 +24,6 @@ package-lock.json
 .history
 /test/testData/processorUnzipShapefile/input/
 /test/testData/processorUnzipShapefile/output/
+/test/testData/processorGeographicInfo/input/
+/test/testData/processorGeographicInfo/output/
+/test/testData/processorWrongInput/input/

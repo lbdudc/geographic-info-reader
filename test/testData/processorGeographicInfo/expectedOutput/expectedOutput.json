@@ -1,0 +1,263 @@
+[
+  {
+    "name": "01_water_collection",
+    "fileName": "01_water_collection.shp",
+    "type": "shapefile",
+    "hasSld": true,
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_CAPT",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "DENOMINACI",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "TIPO_CAPT",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "SISTEMA_CA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "CUENCA",
+        "type": "String",
+        "length": 14
+      },
+      {
+        "name": "SUBCUENCA",
+        "type": "String",
+        "length": 20
+      },
+      {
+        "name": "USO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "PROTECCION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "CONTADOR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "INFRAESTRU",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MCUBICO_AU",
+        "type": "Number",
+        "length": 32
+      },
+      {
+        "name": "geometry",
+        "type": "MultiPoint"
+      }
+    ],
+    "geographicInfo": {
+      "done": false,
+      "value": {
+        "type": "Feature",
+        "properties": {
+          "GEOID": 516865,
+          "FASE": "2000",
+          "PROVINCIA": "15",
+          "MUNICIPIO": "033",
+          "COD_CAPT": "008",
+          "DENOMINACI": "Lestrove",
+          "TIPO_CAPT": "MT",
+          "TITULAR": "MU",
+          "GESTION": "MU",
+          "SISTEMA_CA": "GR",
+          "ESTADO": "M",
+          "CUENCA": null,
+          "SUBCUENCA": null,
+          "USO": "UE",
+          "PROTECCION": "SF",
+          "CONTADOR": "NO",
+          "ANO_SERVIC": null,
+          "INFRAESTRU": null,
+          "MCUBICO_AU": null
+        },
+        "geometry": {
+          "type": "MultiPoint",
+          "coordinates": [[526534.9531916662, 4731727.617081367]]
+        }
+      }
+    }
+  },
+  {
+    "name": "02_main_fibrecement",
+    "fileName": "02_main_fibrecement.shp",
+    "type": "shapefile",
+    "hasSld": true,
+    "schema": [
+      {
+        "name": "GEOID",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "FASE",
+        "type": "String",
+        "length": 4
+      },
+      {
+        "name": "PROVINCIA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_COND",
+        "type": "String",
+        "length": 3
+      },
+      {
+        "name": "COD_TRA",
+        "type": "String",
+        "length": 5
+      },
+      {
+        "name": "TIPO_TCOND",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TIPO_TRAMO",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "TITULAR",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "GESTION",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "ESTADO",
+        "type": "String",
+        "length": 1
+      },
+      {
+        "name": "LONGIT_010",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "DIAMETRO",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "ANO_SERVIC",
+        "type": "Number",
+        "length": 11
+      },
+      {
+        "name": "BAJO_ACERA",
+        "type": "String",
+        "length": 32
+      },
+      {
+        "name": "BAJO_CALZA",
+        "type": "String",
+        "length": 2
+      },
+      {
+        "name": "geometry",
+        "type": "MultiLineString"
+      }
+    ],
+    "geographicInfo": {
+      "done": false,
+      "value": {
+        "type": "Feature",
+        "properties": {
+          "GEOID": 512925,
+          "FASE": "2000",
+          "PROVINCIA": "15",
+          "MUNICIPIO": "017",
+          "COD_COND": "003",
+          "COD_TRA": "003",
+          "TIPO_TCOND": "FC",
+          "TIPO_TRAMO": "GR",
+          "TITULAR": "MU",
+          "GESTION": "MU",
+          "ESTADO": "R",
+          "LONGIT_010": 28,
+          "DIAMETRO": 250,
+          "ANO_SERVIC": null,
+          "BAJO_ACERA": null,
+          "BAJO_CALZA": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [554195.5407113326, 4793910.390447661],
+            [554207.3842138537, 4793936.3028033385]
+          ]
+        }
+      }
+    }
+  }
+]
