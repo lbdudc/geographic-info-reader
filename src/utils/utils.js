@@ -1,4 +1,11 @@
-import fs from "fs";
+import {
+  readFileSync,
+  readdirSync,
+  copyFile,
+  mkdirSync,
+  existsSync,
+  unlinkSync,
+} from "fs";
 import path from "path";
 import jschardet from "jschardet";
 import log from "./log.js";
@@ -10,7 +17,7 @@ import { SKIP_ZIP_EXTS } from "./file-extensions.js";
  * @returns {String} encoding
  */
 export function detectEncoding(filePath) {
-  const buffer = fs.readFileSync(filePath);
+  const buffer = readFileSync(filePath);
   const detectedResult = jschardet.detect(buffer);
   return detectedResult.encoding;
 }
@@ -24,7 +31,7 @@ export async function clearShapefileRawFiles(folderPath, shapefileName) {
   log(`Clearing folder ${folderPath}`);
   log(`Shapefile name: ${shapefileName}`);
 
-  const files = fs.readdirSync(folderPath);
+  const files = readdirSync(folderPath);
 
   // Delete all files except the ones that were in the folder before the process
   for (const file of files) {
@@ -33,7 +40,7 @@ export async function clearShapefileRawFiles(folderPath, shapefileName) {
       !SKIP_ZIP_EXTS.some((ext) => file.endsWith(ext))
     ) {
       const filePath = folderPath + path.sep + file;
-      fs.unlinkSync(filePath);
+      unlinkSync(filePath);
       log(`File ${filePath} deleted`);
     } else {
       log(`File ${file} was in the folder before the process`);
@@ -50,12 +57,12 @@ export const getAbsolutePath = (folderPath) => {
   return path.join(process.cwd(), folderPath);
 };
 
-export function copyFile(inputPathAbsolute, outputPathAbsolute) {
+export function customCopyFile(inputPathAbsolute, outputPathAbsolute) {
   return new Promise((resolve, reject) => {
     const outputDirectory = path.dirname(outputPathAbsolute);
-    if (!fs.existsSync(outputDirectory)) {
+    if (!existsSync(outputDirectory)) {
       try {
-        fs.mkdirSync(outputDirectory, { recursive: true });
+        mkdirSync(outputDirectory, { recursive: true });
       } catch (err) {
         return reject(
           new Error(`Error al crear el directorio de destino: ${err.message}`),
@@ -63,7 +70,7 @@ export function copyFile(inputPathAbsolute, outputPathAbsolute) {
       }
     }
 
-    fs.copyFile(inputPathAbsolute, outputPathAbsolute, (err) => {
+    copyFile(inputPathAbsolute, outputPathAbsolute, (err) => {
       if (err) {
         console.error(`Error copying file: ${err.message}`);
         reject(err);

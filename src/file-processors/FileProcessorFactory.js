@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readFileSync } from "fs";
 import { ShapefileProcessor } from "./ShapefileProcessor.js";
 import { GeopackageProcessor } from "./GeopackageProcessor.js";
 import { GeoTiffProcessor } from "./GeotiffProcessor.js";
@@ -10,11 +10,14 @@ import {
   GPKG_EXT,
   TIFF_EXT,
   ZIP_EXT,
+  SLD_EXT,
 } from "../utils/file-extensions.js";
+import { SldProcessor } from "./SldProcessor.js";
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
 const geotiffProcessor = new GeoTiffProcessor();
+const sldProcessor = new SldProcessor();
 
 async function getFileProcessorForFile(file, inputPathAbsolute) {
   if (file.endsWith(ZIP_EXT)) {
@@ -25,6 +28,8 @@ async function getFileProcessorForFile(file, inputPathAbsolute) {
     return geopackageProcessor;
   } else if (file.endsWith(TIFF_EXT)) {
     return geotiffProcessor;
+  } else if (file.endsWith(SLD_EXT)) {
+    return sldProcessor;
   }
   return null;
 }
@@ -58,7 +63,7 @@ async function getFileProcessorForZip(file, inputPathAbsolute) {
 async function listFilesInZip(inputPath, file) {
   const zip = new JSZip();
   const fullFilePath = path.join(inputPath, file);
-  const fileData = await fs.promises.readFile(fullFilePath);
+  const fileData = readFileSync(fullFilePath);
   const zipData = await zip.loadAsync(fileData); // Cargar el ZIP en memoria
 
   const fileNames = Object.keys(zipData.files); // Obtener los nombres de los archivos

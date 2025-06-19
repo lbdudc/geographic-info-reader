@@ -1,6 +1,6 @@
 import { detectEncoding } from "../utils/utils.js";
 import path from "path";
-import fs from "fs";
+import { existsSync } from "fs";
 import log from "../utils/log.js";
 
 export class FileProcessor {
@@ -21,7 +21,7 @@ export class FileProcessor {
 
     const sldFilePath = filePath.replace(/\.[^/.]+$/, ".sld");
     let hasSld = false;
-    if (fs.existsSync(sldFilePath)) {
+    if (existsSync(sldFilePath)) {
       hasSld = true;
     }
 

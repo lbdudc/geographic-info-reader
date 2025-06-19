@@ -64,4 +64,131 @@ describe("Processor", () => {
 
     expect(res).toStrictEqual(expectedJSONRes);
   });
-}, 5000);
+  test("Process folder with geographicInfo activated", async () => {
+    const testFolderPath = "./test/testData/processorGeographicInfo";
+    const inputFolderPath = "./test/testData/inputGeographicInfo";
+
+    try {
+      rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    } catch (error) {
+      // Expect that the error is because the folder doesn't exist
+      expect(error.code).toBe("ENOENT");
+    }
+
+    cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, {
+      recursive: true,
+      force: true,
+    });
+
+    const processor = new Processor({
+      encoding: "utf-8", // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
+      geographicInfo: true,
+      outputPath: `${testFolderPath}/`,
+    });
+
+    const res = await processor.processFolder(`${testFolderPath}/input`);
+
+    for (const obj of res) {
+      expect(obj).toHaveProperty("geographicInfo");
+    }
+    // Assert that the output folder contains the expected files
+    const expectedFiles = JSON.parse(
+      readFileSync(
+        `${testFolderPath}/expectedOutput/expectedFiles.json`,
+        "utf8",
+      ),
+    );
+
+    expect(existsSync(`${testFolderPath}/output`)).toBe(true);
+
+    const readFiles = readdirSync(`${testFolderPath}/output`);
+
+    for (const expectedFile of expectedFiles) {
+      expect(readFiles.includes(expectedFile)).toBe(true);
+    }
+
+    writeFileSync(
+      `${testFolderPath}/output/output.json`,
+      JSON.stringify(res, null, 2),
+      "utf8",
+    );
+  });
+  test("Process unzip shapefiles", async () => {
+    const testFolderPath = "./test/testData/processorUnzipShapefile";
+    const inputFolderPath = "./test/testData/inputUnzipShapeFile";
+
+    try {
+      rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    } catch (error) {
+      // Expect that the error is because the folder doesn't exist
+      expect(error.code).toBe("ENOENT");
+    }
+
+    cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, {
+      recursive: true,
+      force: true,
+    });
+
+    const processor = new Processor({
+      geographicInfo: false, // true by default
+      outputPath: `${testFolderPath}/`,
+    });
+
+    const res = await processor.processFolder(`${testFolderPath}/input`);
+
+    // Assert that the output folder contains the expected files
+    const expectedJSONRes = JSON.parse(
+      readFileSync(
+        `${testFolderPath}/expectedOutput/expectedOutput.json`,
+        "utf8",
+      ),
+    );
+    const expectedFiles = JSON.parse(
+      readFileSync(
+        `${testFolderPath}/expectedOutput/expectedFiles.json`,
+        "utf8",
+      ),
+    );
+
+    expect(existsSync(`${testFolderPath}/output`)).toBe(true);
+
+    const readFiles = readdirSync(`${testFolderPath}/output`);
+
+    for (const expectedFile of expectedFiles) {
+      expect(readFiles.includes(expectedFile)).toBe(true);
+    }
+
+    writeFileSync(
+      `${testFolderPath}/output/output.json`,
+      JSON.stringify(res, null, 2),
+      "utf8",
+    );
+
+    expect(res).toStrictEqual(expectedJSONRes);
+  });
+  test("Input error", async () => {
+    const testFolderPath = "./test/testData/processorWrongInput";
+    const inputFolderPath = "./test/testData/wrongInput";
+
+    try {
+      rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    } catch (error) {
+      // Expect that the error is because the folder doesn't exist
+      expect(error.code).toBe("ENOENT");
+    }
+
+    cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, {
+      recursive: true,
+      force: true,
+    });
+
+    const processor = new Processor({
+      encoding: "utf-8", // 'auto' by default || 'ascii' || 'utf8' || 'utf-8' || 'latin1' || 'binary' || 'base64' || 'hex'
+      geographicInfo: false, // true by default
+      outputPath: `${testFolderPath}/`,
+    });
+
+    const res = await processor.processFolder(`${testFolderPath}/input`);
+    expect(res).toEqual([]);
+  });
+});

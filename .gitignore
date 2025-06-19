@@ -22,3 +22,8 @@ package-lock.json
 .env
 *.pem
 .history
+/test/testData/processorUnzipShapefile/input/
+/test/testData/processorUnzipShapefile/output/
+/test/testData/processorGeographicInfo/input/
+/test/testData/processorGeographicInfo/output/
+/test/testData/processorWrongInput/input/

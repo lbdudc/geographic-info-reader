@@ -1,9 +1,16 @@
-import fs from "fs";
+import {
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+  mkdirSync,
+  existsSync,
+} from "fs";
 import JSZip from "jszip";
 import { clearShapefileRawFiles } from "./utils.js";
 import path from "path";
 import log from "./log.js";
-import { SKIP_ZIP_EXTS, SLD_EXT, ZIP_EXT } from "./file-extensions.js";
+import { SKIP_ZIP_EXTS, ZIP_EXT } from "./file-extensions.js";
+
 /**
  * Unzips a .zip file
  * @param zipPath
@@ -12,21 +19,21 @@ import { SKIP_ZIP_EXTS, SLD_EXT, ZIP_EXT } from "./file-extensions.js";
  */
 export async function unzipFile(zipPath, outputFolder) {
   log(`Extract .zip file ${zipPath} to ${outputFolder}`);
-  const zipData = fs.readFileSync(zipPath);
+  const zipData = readFileSync(zipPath);
   const zip = await JSZip.loadAsync(zipData);
   const extractedFilePaths = [];
 
-  if (!fs.existsSync(outputFolder)) {
-    fs.mkdirSync(outputFolder, { recursive: true });
+  if (!existsSync(outputFolder)) {
+    mkdirSync(outputFolder, { recursive: true });
   }
 
   for (const [relativePath, file] of Object.entries(zip.files)) {
     const outputPath = path.join(outputFolder, relativePath);
     if (file.dir) {
-      fs.mkdirSync(outputPath, { recursive: true });
+      mkdirSync(outputPath, { recursive: true });
     } else {
       const content = await file.async("nodebuffer");
-      fs.writeFileSync(outputPath, content);
+      writeFileSync(outputPath, content);
       extractedFilePaths.push(outputPath);
     }
   }
@@ -43,7 +50,7 @@ export async function zipFilesGroupByShapefile(folderPath, shapefileName) {
   log(`Zip files of folder ${folderPath}`);
 
   // Read the files of the folder
-  let files = fs.readdirSync(folderPath);
+  let files = readdirSync(folderPath);
 
   // Group the files by shapefile, omitting the other extension files
   const filesByShapefile = [];
@@ -62,13 +69,13 @@ export async function zipFilesGroupByShapefile(folderPath, shapefileName) {
 
   for (const file of filesByShapefile) {
     const filePath = folderPath + path.sep + file;
-    const fileData = fs.readFileSync(filePath);
+    const fileData = readFileSync(filePath);
     zip.file(file, fileData);
   }
 
   const zipFilePath = folderPath + path.sep + shapefileName + ZIP_EXT;
   const content = await zip.generateAsync({ type: "nodebuffer" });
-  fs.writeFileSync(zipFilePath, content);
+  writeFileSync(zipFilePath, content);
 
   // Clear the folder of all files except .zip files and .sld files and others extensions
   log("Clearing folder", folderPath);

@@ -2,23 +2,10 @@ import { FileProcessor } from "./FileProcessor.js";
 import path from "path";
 import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 
-export class GeoTiffProcessor extends FileProcessor {
-  async open() {
-    return null;
+export class SldProcessor extends FileProcessor {
+  async process(filePath, options) {
+    await this.writeFileToOutput(filePath, options.outputPath);
   }
-
-  async getSchemaFields() {
-    return [];
-  }
-
-  async getGeographicInfo() {
-    return;
-  }
-
-  getFileType() {
-    return "geoTIFF";
-  }
-
   async writeFileToOutput(filePath, outputPath) {
     const outCalc = !outputPath
       ? `${path.dirname(filePath)}${path.sep}output`
