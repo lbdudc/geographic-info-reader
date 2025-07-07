@@ -58,7 +58,7 @@ processor.processFolder(inputPath).then((content) => {
 
 This library supports processing geographic data stored in different geographic information files format. It accepts:
 
-- Individual files with extensions: `.shp`, `.cpg`, `.dbf`, `.prj`, `.qpj`, `.shx`.
+- Individual files with extensions: `.shp`, `.cpg`, `.dbf`, `.prj`, `.qpj`, `.shx`, `.gpkg`, `.tif`, `.sld`.
 - Compressed data with Geographic information in a `.zip` file.
 
 The library efficiently handles these inputs for easy manipulation and analysis of geographic data.
