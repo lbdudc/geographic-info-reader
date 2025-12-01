@@ -11,13 +11,16 @@ import {
   TIFF_EXT,
   ZIP_EXT,
   SLD_EXT,
+  WMS_EXT,
 } from "../utils/file-extensions.js";
 import { SldProcessor } from "./SldProcessor.js";
+import { WmsProcessor } from "./WmsProcessor.js";
 
 const shapefileProcessor = new ShapefileProcessor();
 const geopackageProcessor = new GeopackageProcessor();
 const geotiffProcessor = new GeoTiffProcessor();
 const sldProcessor = new SldProcessor();
+const wmsProcessor = new WmsProcessor();
 
 async function getFileProcessorForFile(file, inputPathAbsolute) {
   if (file.endsWith(ZIP_EXT)) {
@@ -30,6 +33,8 @@ async function getFileProcessorForFile(file, inputPathAbsolute) {
     return geotiffProcessor;
   } else if (file.endsWith(SLD_EXT)) {
     return sldProcessor;
+  } else if (file.endsWith(WMS_EXT)) {
+    return wmsProcessor;
   }
   return null;
 }
