@@ -44,7 +44,7 @@ export class WmsProcessor extends FileProcessor {
           const allBBoxes = this._extractBoundingBox(layer);
 
           allLayersInfo.push({
-            urlWms: url,
+            url: url,
             layerName: layer.Name?.[0],
             layerTitle: this._cleanLayerTitle(completeTitle),
             format: format,
@@ -59,6 +59,7 @@ export class WmsProcessor extends FileProcessor {
               null,
             version,
             bbox: this._getPreferredBoundingBox(allBBoxes),
+            external: true,
           });
         }
       } catch (error) {
