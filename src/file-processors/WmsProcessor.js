@@ -33,9 +33,11 @@ export class WmsProcessor extends FileProcessor {
           if (!layer.Name?.[0]) continue;
 
           const completeTitle = layer.Title?.[0] || layer.Name[0];
+          const preferredFormats = ["png", "jpeg", "jpg"];
           const format =
-            formats.find((f) => f.includes("png")) ||
-            formats.find((f) => f.includes("jpeg")) ||
+            formats.find((f) =>
+              preferredFormats.some((pf) => f.includes(pf)),
+            ) ||
             formats[0] ||
             null;
           const crsList = (layer.BoundingBox || [])
@@ -64,6 +66,11 @@ export class WmsProcessor extends FileProcessor {
         }
       } catch (error) {
         console.warn(`Error processing WMS (${url}): ${error.message}`);
+        allLayersInfo.push({
+          url,
+          error: error.message,
+          external: true,
+        });
       }
     }
 
@@ -79,20 +86,38 @@ export class WmsProcessor extends FileProcessor {
   }
 
   async writeFileToOutput(filePath, outputPath) {
-    const outCalc = !outputPath
-      ? `${path.dirname(filePath)}${path.sep}output`
-      : `${outputPath}${path.sep}output`;
+    const outCalc = outputPath
+      ? path.join(outputPath, "output")
+      : path.join(path.dirname(filePath), "output");
+
     const outputPathAbsolute = getAbsolutePath(outCalc);
     const fileName = path.basename(filePath);
-    const fileOutputPath = `${outputPathAbsolute}/${fileName}`;
+    const fileOutputPath = path.join(outputPathAbsolute, fileName);
+
     await customCopyFile(filePath, fileOutputPath);
   }
 
   _ensureCapabilitiesUrl(url) {
-    const lower = url.toLowerCase();
-    if (lower.includes("getcapabilities")) return url;
-    const sep = url.includes("?") ? "&" : "?";
-    return `${url}${sep}service=WMS&request=GetCapabilities`;
+    try {
+      const urlObj = new URL(url);
+      const params = urlObj.searchParams;
+
+      if (!params.has("service")) params.set("service", "WMS");
+      if (!params.has("request")) params.set("request", "GetCapabilities");
+
+      return urlObj.toString();
+    } catch (e) {
+      console.warn(`Invalid URL: ${url}`);
+      return url;
+    }
+  }
+
+  _getCapabilityRoot(json) {
+    return (
+      json.WMS_Capabilities?.Capability?.[0] ||
+      json.WMT_MS_Capabilities?.Capability?.[0] ||
+      null
+    );
   }
 
   _extractVersion(json) {
@@ -104,17 +129,12 @@ export class WmsProcessor extends FileProcessor {
   }
 
   _extractFormats(json) {
-    const capability =
-      json.WMS_Capabilities?.Capability?.[0] ||
-      json.WMT_MS_Capabilities?.Capability?.[0];
-    return capability?.Request?.[0]?.GetMap?.[0]?.Format?.map((f) => f) || [];
+    const capability = this._getCapabilityRoot(json);
+    return capability?.Request?.[0]?.GetMap?.[0]?.Format || [];
   }
 
   _extractLayers(json) {
-    const capability =
-      json.WMS_Capabilities?.Capability?.[0] ||
-      json.WMT_MS_Capabilities?.Capability?.[0];
-    const rootLayer = capability?.Layer?.[0];
+    const rootLayer = this._getCapabilityRoot(json)?.Layer?.[0];
     if (!rootLayer) return [];
     const all = this._flattenLayers(rootLayer);
     return all.filter((l) => l.Name);
@@ -208,11 +228,12 @@ export class WmsProcessor extends FileProcessor {
 
   _cleanLayerTitle(text) {
     if (!text) return;
-    let cleaned = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    cleaned = cleaned.replace(/ñ/gi, "n");
-    cleaned = cleaned.toLowerCase();
-    cleaned = cleaned.replace(/\s+/g, "_");
-    cleaned = cleaned.replace(/[^a-z0-9_]/g, "");
+    let cleaned = text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "");
 
     return cleaned;
   }

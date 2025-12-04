@@ -23,19 +23,13 @@ const sldProcessor = new SldProcessor();
 const wmsProcessor = new WmsProcessor();
 
 async function getFileProcessorForFile(file, inputPathAbsolute) {
-  if (file.endsWith(ZIP_EXT)) {
+  if (file.endsWith(ZIP_EXT))
     return await getFileProcessorForZip(file, inputPathAbsolute);
-  } else if (file.endsWith(SHP_EXT)) {
-    return shapefileProcessor;
-  } else if (file.endsWith(GPKG_EXT)) {
-    return geopackageProcessor;
-  } else if (file.endsWith(TIFF_EXT)) {
-    return geotiffProcessor;
-  } else if (file.endsWith(SLD_EXT)) {
-    return sldProcessor;
-  } else if (file.endsWith(WMS_EXT)) {
-    return wmsProcessor;
-  }
+  if (file.endsWith(SHP_EXT)) return shapefileProcessor;
+  if (file.endsWith(GPKG_EXT)) return geopackageProcessor;
+  if (file.endsWith(TIFF_EXT)) return geotiffProcessor;
+  if (file.endsWith(SLD_EXT)) return sldProcessor;
+  if (file.endsWith(WMS_EXT)) return wmsProcessor;
   return null;
 }
 
