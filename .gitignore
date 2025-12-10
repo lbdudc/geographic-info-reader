@@ -27,3 +27,5 @@ package-lock.json
 /test/testData/processorGeographicInfo/input/
 /test/testData/processorGeographicInfo/output/
 /test/testData/processorWrongInput/input/
+/test/testData/processorWms/input/
+/test/testData/processorWms/output/
