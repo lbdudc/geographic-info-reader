@@ -108,7 +108,7 @@ export class WmsProcessor extends FileProcessor {
       return urlObj.toString();
     } catch (e) {
       console.warn(`Invalid URL: ${url}`);
-      return url;
+      return null;
     }
   }
 
