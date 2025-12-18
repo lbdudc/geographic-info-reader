@@ -170,7 +170,12 @@ describe("Processor", () => {
     const testFolderPath = "./test/testData/processorWms";
     const inputFolderPath = "./test/testData/inputWms";
 
-    rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    try {
+      rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    } catch (error) {
+      // Expect that the error is because the folder doesn't exist
+      expect(error.code).toBe("ENOENT");
+    }
 
     cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, {
       recursive: true,
