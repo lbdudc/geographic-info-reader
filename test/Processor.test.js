@@ -166,6 +166,80 @@ describe("Processor", () => {
 
     expect(res).toStrictEqual(expectedJSONRes);
   });
+  test("Process WMS URLs from file", async () => {
+    const testFolderPath = "./test/testData/processorWms";
+    const inputFolderPath = "./test/testData/inputWms";
+
+    try {
+      rmdirSync(`${testFolderPath}/output`, { recursive: true, force: true });
+    } catch (error) {
+      // Expect that the error is because the folder doesn't exist
+      expect(error.code).toBe("ENOENT");
+    }
+
+    cpSync(`${inputFolderPath}`, `${testFolderPath}/input`, {
+      recursive: true,
+      force: true,
+    });
+
+    const expectedFiles = JSON.parse(
+      readFileSync(
+        `${testFolderPath}/expectedOutput/expectedFiles.json`,
+        "utf8",
+      ),
+    );
+
+    const processor = new Processor({
+      encoding: "utf-8",
+      outputPath: `${testFolderPath}/`,
+    });
+
+    const res = await processor.processFolder(`${testFolderPath}/input`);
+
+    expect(res.length).toBe(1);
+
+    const obj = res[0];
+
+    expect(obj.name).toBe("urls");
+    expect(obj.type).toBe("wms");
+    expect(obj.hasSld).toBe(false);
+    expect(obj.schema).toBeInstanceOf(Array);
+    expect(obj.schema.length).toBeGreaterThan(0);
+
+    const requiredProps = [
+      "url",
+      "layerName",
+      "layerTitle",
+      "format",
+      "crs",
+      "styles",
+      "version",
+      "bbox",
+    ];
+
+    for (const layer of obj.schema) {
+      for (const prop of requiredProps) {
+        expect(layer).toHaveProperty(prop);
+      }
+
+      expect(layer.crs).toBeInstanceOf(Array);
+      expect(layer.styles).toBeInstanceOf(Array);
+      expect(layer.external).toBe(true);
+    }
+
+    expect(existsSync(`${testFolderPath}/output`)).toBe(true);
+
+    const readFiles = readdirSync(`${testFolderPath}/output`);
+    for (const expectedFile of expectedFiles) {
+      expect(readFiles.includes(expectedFile)).toBe(true);
+    }
+
+    writeFileSync(
+      `${testFolderPath}/output/output.json`,
+      JSON.stringify(res, null, 2),
+      "utf8",
+    );
+  });
   test("Input error", async () => {
     const testFolderPath = "./test/testData/processorWrongInput";
     const inputFolderPath = "./test/testData/wrongInput";
