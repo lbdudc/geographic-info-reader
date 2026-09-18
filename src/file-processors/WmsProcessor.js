@@ -1,5 +1,5 @@
 import { FileProcessor } from "./FileProcessor.js";
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import path from "path";
 import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 import { parseStringPromise } from "xml2js";
@@ -12,13 +12,43 @@ export class WmsProcessor extends FileProcessor {
       .map((line) => line.trim())
       .filter((line) => line.length > 0 && !line.startsWith("#"));
 
-    return urls;
+    // A "<filePath>.json" sidecar, when present, scopes each service down to the
+    // specific sublayer(s) actually picked instead of publishing everything the
+    // service advertises (see qgispublisher-plugin's gispublisher_runner.py, which
+    // writes it alongside urls.wms). Its absence — an older plugin, or a urls.wms
+    // authored by hand — falls back to today's whole-service behavior unchanged, so
+    // this stays backward compatible in both directions.
+    let requestsByUrl = null;
+    const sidecarPath = `${filePath}.json`;
+    if (existsSync(sidecarPath)) {
+      try {
+        const requests = JSON.parse(readFileSync(sidecarPath, "utf8"));
+        requestsByUrl = new Map();
+        for (const request of requests) {
+          if (!request?.url) continue;
+          const existing = requestsByUrl.get(request.url) || [];
+          existing.push(request);
+          requestsByUrl.set(request.url, existing);
+        }
+      } catch (error) {
+        console.warn(
+          `Ignoring invalid WMS scoping sidecar (${sidecarPath}): ${error.message}`,
+        );
+      }
+    }
+
+    return { urls, requestsByUrl };
   }
 
-  async getSchemaFields(urls) {
+  async getSchemaFields({ urls, requestsByUrl }) {
     const allLayersInfo = [];
 
     for (const url of urls) {
+      // Multiple QGIS layers can point at the same service with different
+      // sublayer/style/crs/format picks — each becomes its own request object, all
+      // scoping the one fetch below.
+      const requests = requestsByUrl?.get(url) || null;
+
       try {
         const capabilitiesUrl = this._ensureCapabilitiesUrl(url);
         const response = await fetch(capabilitiesUrl);
@@ -27,14 +57,27 @@ export class WmsProcessor extends FileProcessor {
 
         const version = this._extractVersion(json);
         const formats = this._extractFormats(json);
-        const layers = this._extractLayers(json);
+        let layers = this._extractLayers(json);
+
+        const requestedNames = requests
+          ? new Set(requests.flatMap((r) => r.layers || []))
+          : null;
+        if (requestedNames && requestedNames.size > 0) {
+          layers = layers.filter((l) => requestedNames.has(l.Name?.[0]));
+        }
 
         for (const layer of layers) {
           if (!layer.Name?.[0]) continue;
 
-          const completeTitle = layer.Title?.[0] || layer.Name[0];
+          const layerName = layer.Name[0];
+          // Whichever request named this layer — first match wins if more than one
+          // request somehow claims the same sublayer.
+          const request =
+            requests?.find((r) => (r.layers || []).includes(layerName)) || null;
+
+          const completeTitle = layer.Title?.[0] || layerName;
           const preferredFormats = ["png", "jpeg", "jpg"];
-          const format =
+          const autoFormat =
             formats.find((f) =>
               preferredFormats.some((pf) => f.includes(pf)),
             ) ||
@@ -43,15 +86,22 @@ export class WmsProcessor extends FileProcessor {
           const crsList = (layer.BoundingBox || [])
             .map((b) => b.$.CRS || b.$.SRS)
             .filter(Boolean);
+          const autoStyles = (layer.Style || []).map(
+            (s) => s.Name?.[0] || "default",
+          );
           const allBBoxes = this._extractBoundingBox(layer);
 
           allLayersInfo.push({
             url: url,
-            layerName: layer.Name?.[0],
+            layerName: layerName,
             layerTitle: this._cleanLayerTitle(completeTitle),
-            format: format,
-            crs: crsList.length > 0 ? crsList : null,
-            styles: (layer.Style || []).map((s) => s.Name?.[0] || "default"),
+            format: request?.format || autoFormat,
+            crs: request?.crs
+              ? [request.crs]
+              : crsList.length > 0
+                ? crsList
+                : null,
+            styles: request?.styles?.length ? request.styles : autoStyles,
             queryable: layer.$?.queryable === "1" || false,
             attribution:
               layer.Attribution?.[0]?.Title?.[0] ||
@@ -77,8 +127,8 @@ export class WmsProcessor extends FileProcessor {
     return allLayersInfo;
   }
 
-  async getGeographicInfo(urls) {
-    return await this.getSchemaFields(urls);
+  async getGeographicInfo(fileData) {
+    return await this.getSchemaFields(fileData);
   }
 
   getFileType() {
