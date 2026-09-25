@@ -5,6 +5,7 @@ import path from "path";
 import { customCopyFile, getAbsolutePath } from "../utils/utils.js";
 import { SHP_EXTS, ZIP_EXT } from "../utils/file-extensions.js";
 import { readdirSync } from "fs";
+import { readDbfFields, schemaTypeOfDbfField } from "../utils/dbf-fields.js";
 
 export class ShapefileProcessor extends FileProcessor {
   async open(filePath, encoding, options) {
@@ -30,6 +31,8 @@ export class ShapefileProcessor extends FileProcessor {
     // Retrieve the data from .dbf file
     const dbfFilePath = shpPath.replace(".shp", ".dbf");
     fileData.dbfData = await shapefile.openDbf(dbfFilePath);
+    // The library doesn't say how many decimals a numeric field has
+    fileData.dbfFields = readDbfFields(dbfFilePath);
     return fileData;
   }
 
@@ -42,6 +45,10 @@ export class ShapefileProcessor extends FileProcessor {
 
     // Retrieve the schema from .dbf file
     let schemaFields = dbfData._fields
+      .map((field, index) => ({
+        ...field,
+        decimals: fileData.dbfFields?.[index]?.decimals ?? 0,
+      }))
       .filter(
         (field, index, self) =>
           index ===
@@ -50,7 +57,7 @@ export class ShapefileProcessor extends FileProcessor {
       .map((field) => {
         return {
           name: field.name,
-          type: field.type === "N" ? "Number" : "String",
+          type: schemaTypeOfDbfField(field.type, field.decimals),
           length: field.length,
         };
       });
